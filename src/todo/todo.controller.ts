@@ -12,12 +12,7 @@ export class TodoController {
   create(@Body() createTodoDto: CreateTodoDto) {
     return this.todoService.create(createTodoDto);
   }
-
-  // @Post('test')
-  // create(@Body() createTestTodoDto: CreateTestTodoDto) {
-  //   return this.todoService.
-  // }
-
+  
   @Get()
   findAll() {
     return this.todoService.findAll();

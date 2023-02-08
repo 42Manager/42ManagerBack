@@ -22,12 +22,6 @@ export class TodoService {
     return 'This action adds a new todo';
   }
 
-  // createTest(createTestTodoDto: CreateTestTodoDto) {
-  //   const user = this.userRepository.findOne({
-  //     where: { uuid: createTestTodoDto.uuid },
-  //   });
-  // }
-
   findAll() {
     return `This action returns all todo`;
   }

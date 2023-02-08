@@ -13,7 +13,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       isGlobal: true,
     }),
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
+      inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
         host: configService.get('DB_HOST'),
@@ -24,7 +24,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         synchronize: false,
         entities: [__dirname + '/**/*.entity.{js,ts}'],
       }),
-      inject: [ConfigService],
     }),
   ],
 })

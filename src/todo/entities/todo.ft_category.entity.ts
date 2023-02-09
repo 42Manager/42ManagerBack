@@ -2,17 +2,17 @@ import {
   Entity,
   CreateDateColumn,
   UpdateDateColumn,
-  ManyToOne,
-  JoinColumn,
   PrimaryGeneratedColumn,
   Column,
   Unique,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 import { Account } from './todo.account.entity';
 
-@Entity({ name: 'category' })
+@Entity({ name: 'ft_category' })
 @Unique(['uid', 'name'])
-export class Category {
+export class FtCategory {
   @PrimaryGeneratedColumn({ name: 'id' })
   id: number;
 

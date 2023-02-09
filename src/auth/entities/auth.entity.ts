@@ -1,5 +1,5 @@
 import { ApiExtraModels, ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, Unique, CreateDateColumn } from 'typeorm';
 
 @Entity()
 @Unique(['intra_id'])
@@ -30,7 +30,7 @@ export class Account {
   })
   refresh_token: string;
 
-  @Column({ default: true })
+  @CreateDateColumn()
   @ApiProperty({
     description: 'account creation time',
     example: '2023-02-07 23:24:35.01057',

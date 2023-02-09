@@ -1,25 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Category } from './entities/todo.category.entity';
+import { CategoryKind } from './entities/todo.category_kind.entity';
+import { Task } from './entities/todo.task.entity';
+import { Account } from './entities/todo.account.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-import { Category } from './entities/todo.category.entity';
-import { CategoryKind } from './entities/todo.category_kinds.entity';
-import { TodoList } from './entities/todo.todoList.entity';
-import { User } from './entities/todo.user.entity';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 
 @Injectable()
 export class TodoService {
   constructor(
-    @InjectRepository(User) private userRepository: Repository<User>,
+    @InjectRepository(Account) private accountRepository: Repository<Account>,
     @InjectRepository(CategoryKind)
     private categoryKindRepository: Repository<CategoryKind>,
     @InjectRepository(Category)
     private categoryRepository: Repository<Category>,
-    @InjectRepository(TodoList)
-    private todoListRepository: Repository<TodoList>,
+    @InjectRepository(Task)
+    private taskRepository: Repository<Task>,
   ) {}
 
   getMonthlyTodoCount(uid: string, month: number) {}

@@ -2,13 +2,13 @@ import { Module } from '@nestjs/common';
 import { TodoService } from './todo.service';
 import { TodoController } from './todo.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './entities/todo.user.entity';
-import { CategoryKind } from './entities/todo.category_kinds.entity';
+import { Account } from './entities/todo.account.entity';
+import { CategoryKind } from './entities/todo.category_kind.entity';
 import { Category } from './entities/todo.category.entity';
-import { TodoList } from './entities/todo.todoList.entity';
+import { Task } from './entities/todo.task.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, CategoryKind, Category, TodoList])],
+  imports: [TypeOrmModule.forFeature([Account, CategoryKind, Category, Task])],
   controllers: [TodoController],
   providers: [TodoService],
 })

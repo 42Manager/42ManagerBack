@@ -3,7 +3,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
-  PrimaryColumn,
+  JoinColumn,
   PrimaryGeneratedColumn,
   Column,
 } from 'typeorm';
@@ -12,24 +12,26 @@ import { Account } from './todo.account.entity';
 
 @Entity({ name: 'category' })
 export class Category {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ name: 'id' })
   id: number;
 
   @ManyToOne(() => CategoryKind)
+  @JoinColumn({ name: 'category_kind_id' })
   category_kind_id: CategoryKind;
 
   @ManyToOne(() => Account)
+  @JoinColumn({ name: 'account' })
   account: Account;
 
-  @Column()
+  @Column({ name: 'name' })
   name: string;
 
-  @Column()
+  @Column({ name: 'is_share' })
   is_share: boolean;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'created_at' })
   created_at: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: 'updated_at' })
   updated_at: Date;
 }

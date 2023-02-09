@@ -7,34 +7,34 @@ import {
   Entity,
 } from 'typeorm';
 import { Category } from './todo.category.entity';
-import { User } from './todo.user.entity';
+import { Account } from './todo.account.entity';
 
 @Entity()
-export class TodoList {
+export class Task {
   @PrimaryGeneratedColumn()
-  index: number;
+  id: number;
 
   @ManyToOne(() => Category)
-  subject: Category;
+  category_id: Category;
 
-  @ManyToOne(() => User)
-  user: User;
-
-  @Column()
-  todo: string;
+  @ManyToOne(() => Account)
+  account: Account;
 
   @Column()
-  isDone: boolean;
+  content: string;
 
   @Column()
-  startDate: Date;
+  is_done: boolean;
 
   @Column()
-  finishDate: Date;
+  start_at: Date;
+
+  @Column()
+  finish_at: Date;
 
   @CreateDateColumn()
-  create_date: Date;
+  created_at: Date;
 
   @UpdateDateColumn()
-  modified_date: Date;
+  updated_at: Date;
 }

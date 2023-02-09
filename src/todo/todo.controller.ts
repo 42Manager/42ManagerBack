@@ -12,7 +12,7 @@ import {
 import { TodoService } from './todo.service';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAccessTokenGuard } from 'src/auth/guard/jwt.auth.guard';
-import { GetAccount } from 'src/auth/decorator/account-info.decorator';
+import { JwtPayload } from 'src/auth/decorator/account-info.decorator';
 import { Account } from 'src/auth/entities/auth.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
@@ -29,7 +29,7 @@ export class TodoController {
   @ApiOperation({ summary: '월간 일별 task 개수 검색' })
   @Get('count')
   getMonthlyTodoCount(
-    @GetAccount() account: Account,
+    @JwtPayload() account: Account,
     @Query('month') month: number,
   ) {
     return this.todoService.getMonthlyTodoCount(account.uid, month);
@@ -37,14 +37,14 @@ export class TodoController {
 
   @ApiOperation({ summary: '카테고리 검색' })
   @Get('category')
-  getCategory(@GetAccount() account: Account) {
+  getCategory(@JwtPayload() account: Account) {
     return this.todoService.getCategory(account.uid);
   }
 
   @ApiOperation({ summary: '카테고리 생성' })
   @Post('category')
   createCategory(
-    @GetAccount() account: Account,
+    @JwtPayload() account: Account,
     @Body() createTodoDto: CreateCategoryDto,
   ) {
     return this.todoService.createCategory(account.uid, createTodoDto);
@@ -53,7 +53,7 @@ export class TodoController {
   @ApiOperation({ summary: '카테고리 수정' })
   @Patch('category/:id')
   updateCategory(
-    @GetAccount() account: Account,
+    @JwtPayload() account: Account,
     @Param('id') categoryId: number,
     @Body() updateTodoDto: UpdateCategoryDto,
   ) {
@@ -67,7 +67,7 @@ export class TodoController {
   @ApiOperation({ summary: '카테고리 삭제' })
   @Delete('category/:id')
   deleteCategory(
-    @GetAccount() account: Account,
+    @JwtPayload() account: Account,
     @Param('id') categoryId: number,
   ) {
     return this.todoService.deleteCategory(account.uid, categoryId);
@@ -75,13 +75,13 @@ export class TodoController {
 
   @ApiOperation({ summary: '전체 task 검색' })
   @Get('task')
-  getTask(@GetAccount() account: Account) {
+  getTask(@JwtPayload() account: Account) {
     return this.todoService.getTask(account.uid);
   }
 
   @ApiOperation({ summary: '월별 전체 task 검색' })
   getMonthlyTask(
-    @GetAccount() account: Account,
+    @JwtPayload() account: Account,
     @Query('month') month: number,
   ) {
     return this.todoService.getMonthlyTask(account.uid, month);
@@ -90,7 +90,7 @@ export class TodoController {
   @ApiOperation({ summary: 'task 추가' })
   @Post('task')
   createTask(
-    @GetAccount() account: Account,
+    @JwtPayload() account: Account,
     @Body() createTaskDto: CreateTaskDto,
   ) {
     return this.todoService.createTask(account.uid, createTaskDto);
@@ -99,7 +99,7 @@ export class TodoController {
   @ApiOperation({ summary: 'task 수정' })
   @Patch('task/:id')
   updateTask(
-    @GetAccount() account: Account,
+    @JwtPayload() account: Account,
     @Param('id') taskId: number,
     @Body() updateTaskDto: UpdateTaskDto,
   ) {
@@ -108,7 +108,7 @@ export class TodoController {
 
   @ApiOperation({ summary: 'task 삭제' })
   @Delete('task/:id')
-  deleteTask(@GetAccount() account: Account, @Param('id') taskId: number) {
+  deleteTask(@JwtPayload() account: Account, @Param('id') taskId: number) {
     return this.todoService.deleteTask(account.uid, taskId);
   }
 }

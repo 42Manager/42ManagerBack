@@ -1,8 +1,13 @@
 import { ApiExtraModels, ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, PrimaryGeneratedColumn, Unique, CreateDateColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
-@Unique(['intra_id'])
 @ApiExtraModels()
 export class Account {
   @PrimaryGeneratedColumn('uuid')
@@ -13,7 +18,7 @@ export class Account {
   })
   uid: string;
 
-  @Column()
+  @Column({ unique: true, nullable: true })
   @ApiProperty({
     description: '42intra id',
     example: 'seonghle',
@@ -21,7 +26,7 @@ export class Account {
   })
   intra_id: string;
 
-  @Column()
+  @Column({ nullable: true })
   @ApiProperty({
     description: 'generated refresh token',
     example:
@@ -38,7 +43,7 @@ export class Account {
   })
   created_at: Date;
 
-  @Column()
+  @UpdateDateColumn({ nullable: true })
   @ApiProperty({
     description: 'account modification time',
     example: '2023-02-07 23:45:29.068702',

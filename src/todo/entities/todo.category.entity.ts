@@ -4,24 +4,32 @@ import {
   UpdateDateColumn,
   ManyToOne,
   PrimaryColumn,
+  PrimaryGeneratedColumn,
+  Column,
 } from 'typeorm';
 import { CategoryKind } from './todo.category_kinds.entity';
-import { User } from './todo.user.entity';
+import { Account } from './todo.account.entity';
 
 @Entity({ name: 'category' })
 export class Category {
-  @PrimaryColumn()
-  category: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @ManyToOne(() => CategoryKind)
-  categoryKind: CategoryKind;
+  category_kind_id: CategoryKind;
 
-  @ManyToOne(() => User)
-  user: User;
+  @ManyToOne(() => Account)
+  user: Account;
+
+  @Column()
+  name: string;
+
+  @Column()
+  is_share: boolean;
 
   @CreateDateColumn()
-  create_date: Date;
+  create_at: Date;
 
   @UpdateDateColumn()
-  modified_date: Date;
+  modified_at: Date;
 }

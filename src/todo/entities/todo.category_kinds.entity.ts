@@ -3,17 +3,21 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
-  PrimaryColumn,
+  PrimaryGeneratedColumn,
+  Column,
 } from 'typeorm';
 
-@Entity({ name: 'categoryKind' })
+@Entity({ name: 'category_kind' })
 export class CategoryKind {
-  @PrimaryColumn()
-  subject_kind: string;
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column()
+  name: string;
 
   @CreateDateColumn()
-  create_date: Date;
+  create_at: Date;
 
   @UpdateDateColumn()
-  modified_date: Date;
+  modified_at: Date;
 }

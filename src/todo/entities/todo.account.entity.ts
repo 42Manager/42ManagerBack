@@ -15,11 +15,11 @@ export class Account {
   intra: string;
 
   @Column()
-  reflashToken: string;
+  reflash_token: string;
 
   @CreateDateColumn()
-  create_at: Date;
+  created_at: Date;
 
   @UpdateDateColumn()
-  modified_at: Date;
+  updated_at: Date;
 }

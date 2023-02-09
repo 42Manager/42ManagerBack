@@ -18,7 +18,7 @@ export class Task {
   category_id: Category;
 
   @ManyToOne(() => Account)
-  user: Account;
+  account: Account;
 
   @Column()
   content: string;
@@ -33,8 +33,8 @@ export class Task {
   finish_at: Date;
 
   @CreateDateColumn()
-  create_at: Date;
+  created_at: Date;
 
   @UpdateDateColumn()
-  modified_at: Date;
+  updated_at: Date;
 }

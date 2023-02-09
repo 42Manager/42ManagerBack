@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
   Column,
 } from 'typeorm';
-import { CategoryKind } from './todo.category_kinds.entity';
+import { CategoryKind } from './todo.category_kind.entity';
 import { Account } from './todo.account.entity';
 
 @Entity({ name: 'category' })
@@ -19,7 +19,7 @@ export class Category {
   category_kind_id: CategoryKind;
 
   @ManyToOne(() => Account)
-  user: Account;
+  account: Account;
 
   @Column()
   name: string;
@@ -28,8 +28,8 @@ export class Category {
   is_share: boolean;
 
   @CreateDateColumn()
-  create_at: Date;
+  created_at: Date;
 
   @UpdateDateColumn()
-  modified_at: Date;
+  updated_at: Date;
 }

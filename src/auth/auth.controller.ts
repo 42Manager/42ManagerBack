@@ -55,6 +55,7 @@ export class AuthController {
     res.cookie('refreshToken', serviceResult.refreshToken, {
       domain: this.config.get('FRONT_DOMAIN'),
       httpOnly: true,
+      // secure: true,
     });
 
     return {
@@ -79,6 +80,7 @@ export class AuthController {
     res.cookie('refreshToken', serviceResult.refreshToken, {
       domain: this.config.get('FRONT_DOMAIN'),
       httpOnly: true,
+      // secure: true,
     });
 
     return {

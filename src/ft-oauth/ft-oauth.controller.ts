@@ -56,6 +56,7 @@ export class FtOauthController {
     res.cookie('ftAccessToken', serviceResult.ftAccessToken, {
       domain: process.env.FRONT_DOMAIN,
       httpOnly: true,
+      // secure: true,
     });
 
     return serviceResult.status;

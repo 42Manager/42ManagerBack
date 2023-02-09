@@ -8,18 +8,18 @@ import {
 
 @Entity({ name: 'account' })
 export class Account {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn('uuid', { name: 'uid' })
   uid: string;
 
-  @Column()
-  intra: string;
+  @Column({ name: 'intra_id' })
+  intra_id: string;
 
-  @Column()
+  @Column({ name: 'refresh_token' })
   refresh_token: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'created_at' })
   created_at: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: 'updated_at' })
   updated_at: Date;
 }

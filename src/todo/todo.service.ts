@@ -2,8 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Category } from './entities/todo.category.entity';
-import { CategoryKind } from './entities/todo.category_kind.entity';
 import { Task } from './entities/todo.task.entity';
+import { FtCategory } from './entities/todo.ft_category.entity';
+import { FtTask } from './entities/todo.ft_task.entity';
 import { Account } from './entities/todo.account.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
@@ -14,12 +15,14 @@ import { UpdateTaskDto } from './dto/update-task.dto';
 export class TodoService {
   constructor(
     @InjectRepository(Account) private accountRepository: Repository<Account>,
-    @InjectRepository(CategoryKind)
-    private categoryKindRepository: Repository<CategoryKind>,
     @InjectRepository(Category)
     private categoryRepository: Repository<Category>,
     @InjectRepository(Task)
     private taskRepository: Repository<Task>,
+    @InjectRepository(FtCategory)
+    private ftCategoryRepository: Repository<FtCategory>,
+    @InjectRepository(FtTask)
+    private ftTaskRepository: Repository<FtTask>,
   ) {}
 
   getMonthlyTodoCount(uid: string, month: number) {}

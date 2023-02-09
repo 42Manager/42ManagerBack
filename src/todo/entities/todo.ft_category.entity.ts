@@ -2,21 +2,14 @@ import {
   Entity,
   CreateDateColumn,
   UpdateDateColumn,
-  ManyToOne,
-  JoinColumn,
   PrimaryGeneratedColumn,
   Column,
 } from 'typeorm';
-import { Account } from './todo.account.entity';
 
-@Entity({ name: 'category' })
-export class Category {
+@Entity({ name: 'ft_category' })
+export class FtCategory {
   @PrimaryGeneratedColumn({ name: 'id' })
   id: number;
-
-  @ManyToOne(() => Account)
-  @JoinColumn({ name: 'account' })
-  account: Account;
 
   @Column({ name: 'name' })
   name: string;

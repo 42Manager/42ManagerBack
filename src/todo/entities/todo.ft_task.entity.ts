@@ -7,17 +7,17 @@ import {
   Entity,
   JoinColumn,
 } from 'typeorm';
-import { Category } from './todo.category.entity';
+import { FtCategory } from './todo.ft_category.entity';
 import { Account } from './todo.account.entity';
 
-@Entity({ name: 'task' })
-export class Task {
+@Entity({ name: 'ft_task' })
+export class FtTask {
   @PrimaryGeneratedColumn({ name: 'id' })
   id: number;
 
-  @ManyToOne(() => Category)
-  @JoinColumn({ name: 'category_id' })
-  category_id: Category;
+  @ManyToOne(() => FtCategory)
+  @JoinColumn({ name: 'ft_category_id' })
+  ft_category_id: FtCategory;
 
   @ManyToOne(() => Account)
   @JoinColumn({ name: 'account' })

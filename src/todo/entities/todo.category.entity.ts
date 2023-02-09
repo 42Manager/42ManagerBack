@@ -6,10 +6,12 @@ import {
   JoinColumn,
   PrimaryGeneratedColumn,
   Column,
+  Unique,
 } from 'typeorm';
 import { Account } from './todo.account.entity';
 
 @Entity({ name: 'category' })
+@Unique(['account', 'name'])
 export class Category {
   @PrimaryGeneratedColumn({ name: 'id' })
   id: number;

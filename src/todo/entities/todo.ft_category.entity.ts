@@ -4,12 +4,21 @@ import {
   UpdateDateColumn,
   PrimaryGeneratedColumn,
   Column,
+  Unique,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
+import { Account } from './todo.account.entity';
 
 @Entity({ name: 'ft_category' })
+@Unique(['account', 'name'])
 export class FtCategory {
   @PrimaryGeneratedColumn({ name: 'id' })
   id: number;
+
+  @ManyToOne(() => Account)
+  @JoinColumn({ name: 'account' })
+  account: Account;
 
   @Column({ name: 'name' })
   name: string;

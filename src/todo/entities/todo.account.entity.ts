@@ -15,7 +15,7 @@ export class Account {
   intra: string;
 
   @Column()
-  reflash_token: string;
+  refresh_token: string;
 
   @CreateDateColumn()
   created_at: Date;

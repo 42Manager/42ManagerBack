@@ -17,11 +17,11 @@ export class Task {
 
   @ManyToOne(() => Category)
   @JoinColumn({ name: 'category_id' })
-  category_id: Category;
+  category_id: number;
 
   @ManyToOne(() => Account)
   @JoinColumn({ name: 'account' })
-  account: Account;
+  uid: string;
 
   @Column({ name: 'content' })
   content: string;

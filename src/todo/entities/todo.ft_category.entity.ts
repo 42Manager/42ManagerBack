@@ -11,14 +11,14 @@ import {
 import { Account } from './todo.account.entity';
 
 @Entity({ name: 'ft_category' })
-@Unique(['account', 'name'])
+@Unique(['uid', 'name'])
 export class FtCategory {
   @PrimaryGeneratedColumn({ name: 'id' })
   id: number;
 
   @ManyToOne(() => Account)
-  @JoinColumn({ name: 'account' })
-  account: Account;
+  @JoinColumn({ name: 'uid' })
+  uid: string;
 
   @Column({ name: 'name' })
   name: string;

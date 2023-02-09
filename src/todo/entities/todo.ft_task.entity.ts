@@ -17,11 +17,11 @@ export class FtTask {
 
   @ManyToOne(() => FtCategory)
   @JoinColumn({ name: 'ft_category_id' })
-  ft_category_id: FtCategory;
+  ft_category_id: number;
 
   @ManyToOne(() => Account)
   @JoinColumn({ name: 'account' })
-  account: Account;
+  uid: string;
 
   @Column({ name: 'content' })
   content: string;

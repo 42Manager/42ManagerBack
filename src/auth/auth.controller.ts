@@ -22,7 +22,7 @@ import { Account } from './entities/auth.entity';
 import { JwtRefreshTokenGuard } from './guard/jwt.auth.guard';
 import { Response } from 'express';
 import { ConfigService } from '@nestjs/config';
-import { Cookies } from './decorator/cookie-jwt.decorator';
+import { Cookies } from '../decorator/cookie-jwt.decorator';
 
 @ApiTags('Auth')
 @Controller('auth')

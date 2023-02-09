@@ -16,7 +16,7 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { GetAccount } from './decorator/account-info.decorator';
+import { JwtPayload } from './decorator/account-info.decorator';
 import { Account } from './entities/auth.entity';
 import { JwtRefreshTokenGuard } from './guard/jwt.auth.guard';
 import { LoginDto } from './dto/login.dto';
@@ -33,7 +33,7 @@ export class AuthController {
   @ApiBearerAuth()
   @Post('')
   @UseGuards(JwtRefreshTokenGuard)
-  async automaticLogin(@GetAccount() account: Account) {
+  async automaticLogin(@JwtPayload() account: Account) {
     return await this.authService.automaticLogin(account.uid);
   }
 

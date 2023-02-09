@@ -16,41 +16,63 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async login(code: string) {
-    let intraAccessToken;
-    let intraInfo;
-    let uid;
+  async reissuanceToken(uid: string) {
+    let account: Account;
+    try {
+      account = await this.accountRepository.findOne({
+        where: { uid },
+      });
+    } catch (err) {
+      console.log('사용자 정보 확인 실패');
+      throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    const accessToken = this.jwtService.sign(
+      {
+        uid: account.uid,
+        intraId: account.intra_id,
+      },
+      {
+        expiresIn: this.config.get('JWT_ACCESS_EXPIRE'),
+      },
+    );
+
+    const refreshToken = this.jwtService.sign(
+      {
+        uid: account.uid,
+      },
+      {
+        expiresIn: this.config.get('JWT_REFRESH_EXPIRE'),
+      },
+    );
 
     try {
-      const accessTokenResult = await this.httpService.axiosRef.post(
-        'https://api.intra.42.fr/oauth/token',
-        JSON.stringify({
-          grant_type: 'authorization_code',
-          client_id: this.config.get('FT_API_UID'),
-          client_secret: this.config.get('FT_API_SECRET'),
-          code,
-          redirect_uri: 'https://42seoul.link',
-        }),
-        {
-          headers: {
-            'content-type': 'application/json',
-          },
-        },
+      await this.accountRepository.update(
+        { uid: account.uid },
+        { refresh_token: refreshToken },
       );
-
-      intraAccessToken = accessTokenResult.data.access_token;
-      console.log(intraAccessToken);
     } catch (err) {
-      console.log('42 access token 발급 실패');
-      throw new HttpException(err, HttpStatus.UNAUTHORIZED);
+      console.log('refresh token 삽입 에러');
+      throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    return {
+      status: true,
+      accessToken: accessToken,
+      refreshToken: refreshToken,
+    };
+  }
+
+  async login(ftAccessToken: string) {
+    let intraInfo;
+    let uid;
 
     try {
       const intraInfoResult = await this.httpService.axiosRef.get(
         'https://api.intra.42.fr/v2/me',
         {
           headers: {
-            Authorization: `Bearer ${intraAccessToken}`,
+            Authorization: `Bearer ${ftAccessToken}`,
             'content-type': 'application/json',
           },
         },
@@ -80,18 +102,29 @@ export class AuthService {
         uid = user.uid;
       }
     } catch (err) {
-      console.log('사용자 정보 확인 실패');
+      console.log('사용자 정보 저장 실패');
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    const accessToken = this.jwtService.sign({
-      uid: uid,
-      intraId: intraInfo.intraId,
-    });
+    const accessToken = this.jwtService.sign(
+      {
+        uid,
+        intraId: intraInfo.intraId,
+      },
+      {
+        expiresIn: this.config.get('JWT_ACCESS_EXPIRE'),
+      },
+    );
 
-    const refreshToken = this.jwtService.sign({
-      uid: uid,
-    });
+    const refreshToken = this.jwtService.sign(
+      {
+        uid,
+      },
+      {
+        expiresIn: this.config.get('JWT_REFRESH_EXPIRE'),
+      },
+    );
+
     try {
       await this.accountRepository.save({
         uid,
@@ -104,46 +137,9 @@ export class AuthService {
 
     return {
       status: true,
-      intraAccessToken: intraAccessToken,
       accessToken: accessToken,
       refreshToken: refreshToken,
-    };
-  }
-
-  async automaticLogin(uid: string) {
-    let account: Account;
-    try {
-      account = await this.accountRepository.findOne({
-        where: { uid },
-      });
-    } catch (err) {
-      console.log('사용자 정보 확인 실패');
-      throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    const accessToken = this.jwtService.sign({
-      uid: account.uid,
-      intraId: account.intra_id,
-    });
-
-    const refreshToken = this.jwtService.sign({
-      uid: account.uid,
-    });
-    try {
-      await this.accountRepository.save({
-        uid,
-        intra_id: account.intra_id,
-        refresh_token: refreshToken,
-      });
-    } catch (err) {
-      console.log('refresh token 삽입 에러');
-      throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    return {
-      status: true,
-      accessToken: accessToken,
-      refreshToken: refreshToken,
+      ftAccessToken: ftAccessToken,
     };
   }
 }

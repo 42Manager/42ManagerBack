@@ -14,7 +14,7 @@ import { ConfigService } from '@nestjs/config';
   imports: [
     TypeOrmModule.forFeature([Account]),
     HttpModule,
-    PassportModule.register({ defaultStrategy: 'jwt-access', session: false }),
+    PassportModule.register({ session: false }),
     JwtModule.registerAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => {
@@ -22,7 +22,6 @@ import { ConfigService } from '@nestjs/config';
           secret: config.get('JWT_SECRET'),
           signOptions: {
             issuer: config.get('JWT_ISSUER'),
-            expiresIn: config.get('JWT_EXPIRE'),
           },
         };
       },

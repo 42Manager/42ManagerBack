@@ -34,9 +34,14 @@ export class TodoService {
     updateCategoryDto: UpdateCategoryDto,
   ) {}
   deleteCategory(uid: string, categoryId: number) {}
+  get42Category(uid: string) {}
   getTask(uid: string) {}
   getMonthlyTask(uid: string, month: number) {}
   createTask(uid: string, createTaskDto: CreateTaskDto) {}
   updateTask(uid: string, taskId: number, updateTaskDto: UpdateTaskDto) {}
   deleteTask(uid: string, taskId: number) {}
+  getFtTask(uid: string) {}
+  createFtTask(uid: string, categoryId: number, createTaskDto: CreateTaskDto) {}
+  updateFtTask(uid: string, categoryId: number, updateTaskDto: UpdateTaskDto) {}
+  deleteFtTask(uid: string, categoryId: number) {}
 }

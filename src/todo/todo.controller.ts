@@ -73,6 +73,19 @@ export class TodoController {
     return this.todoService.deleteCategory(account.uid, categoryId);
   }
 
+  @ApiOperation({ summary: '42 카테고리 검색' })
+  @Get('ft-category')
+  get42Category(@JwtPayload() account: Account) {
+    // cookie에 있는 인트라 토큰 받도록 구현 필요
+    // 42 inner 과제 목록과 현재 42서울 사용자가 등록한 과제 목록 가져오기
+    // 끝낸 과제와 등록하지 않은 과제는 후순위로 될 수 있도록 내림
+    // 1. 등록한 과제 2. 등록 가능한 과제 3. 끝낸 과제 4. 등록할 수 없는 과제
+  }
+
+  @ApiOperation({ summary: '42 카테고리 삭제' })
+  @Delete('ft-category/:id')
+  delete42Category() {}
+
   @ApiOperation({ summary: '전체 task 검색' })
   @Get('task')
   getTask(@JwtPayload() account: Account) {
@@ -111,4 +124,20 @@ export class TodoController {
   deleteTask(@JwtPayload() account: Account, @Param('id') taskId: number) {
     return this.todoService.deleteTask(account.uid, taskId);
   }
+  
+  @ApiOperation({ summary: '42 task 검색' })
+  @Get('ft-task')
+  getFtTask(@JwtPayload() account: Account) {}
+
+  @ApiOperation({ summary: '42 task 생성' })
+  @Post('ft-task')
+  createFtTask(@JwtPayload() account: Account) {}
+
+  @ApiOperation({ summary: '42 task 수정' })
+  @Patch('ft-task/:id')
+  updateFtTask(@JwtPayload() account: Account) {}
+
+  @ApiOperation({ summary: '42 task 삭제' })
+  @Delete('ft-task/:id')
+  deleteFtTask(@JwtPayload() account: Account) {}
 }

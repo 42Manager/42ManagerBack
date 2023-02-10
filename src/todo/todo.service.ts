@@ -60,18 +60,29 @@ export class TodoService {
   async createCategory(uid: string, createCategoryDto: CreateCategoryDto) {
     const data = {
       id: 0,
-      created_at: new Date(),
+      createdAt: '',
     };
 
     try {
-      const createResult = await this.categoryRepository.save({
+      const insertDataSet = {
         uid,
         name: createCategoryDto.name,
-      });
+      };
+
+      if (createCategoryDto.color) {
+        insertDataSet['color'] = createCategoryDto.color;
+      }
+
+      const createResult = await this.categoryRepository.save(insertDataSet);
 
       data.id = createResult.id;
-      data.created_at = createResult.created_at;
+      data.createdAt = format(createResult.created_at, 'yyyy-MM-dd HH:mm:ss');
     } catch (err) {
+      if (err.detail?.indexOf('already exists') !== -1) {
+        console.log('이미 존재하는 카테고리명으로 요청하여 category 생성 실패');
+        throw new BadRequestException(err.detail);
+      }
+
       console.log('category 생성 실패');
       throw new InternalServerErrorException(err);
     }

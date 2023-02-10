@@ -12,7 +12,7 @@ import {
 import { TodoService } from './todo.service';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAccessTokenGuard } from 'src/auth/guard/jwt.auth.guard';
-import { JwtPayload } from 'src/auth/decorator/account-info.decorator';
+import { JwtPayload } from 'src/decorator/jwt-payload.decorator';
 import { Account } from 'src/auth/entities/auth.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
@@ -124,7 +124,7 @@ export class TodoController {
   deleteTask(@JwtPayload() account: Account, @Param('id') taskId: number) {
     return this.todoService.deleteTask(account.uid, taskId);
   }
-
+  
   @ApiOperation({ summary: '42 task 검색' })
   @Get('ft-task')
   getFtTask(@JwtPayload() account: Account) {}

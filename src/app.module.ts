@@ -3,11 +3,13 @@ import { AuthModule } from './auth/auth.module';
 import { TodoModule } from './todo/todo.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { FtOauthModule } from './ft-oauth/ft-oauth.module';
 
 @Module({
   imports: [
     AuthModule,
     TodoModule,
+    FtOauthModule,
     ConfigModule.forRoot({
       envFilePath: ['.env', '.env.api'],
       isGlobal: true,

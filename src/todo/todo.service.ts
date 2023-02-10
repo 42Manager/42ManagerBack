@@ -114,7 +114,7 @@ export class TodoService {
         );
       }
     } catch (err) {
-      console.log('category update 실패');
+      console.log('category 수정 실패');
       throw new InternalServerErrorException(err);
     }
 

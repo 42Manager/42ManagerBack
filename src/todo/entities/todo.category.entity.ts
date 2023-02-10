@@ -26,6 +26,9 @@ export class Category {
   @Column({ name: 'is_share', default: true })
   is_share: boolean;
 
+  @Column({ name: 'color', default: '#56aa7a' })
+  color: string;
+
   @CreateDateColumn({ name: 'created_at' })
   created_at: Date;
 

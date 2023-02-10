@@ -42,6 +42,7 @@ export class TodoService {
         data.push(new ResponesCategoryDto());
         data[i].id = value.id;
         data[i].name = value.name;
+        data[i].color = value.color;
         data[i].created_at = format(value.created_at, 'yyyy-MM-dd HH:mm:ss');
       });
     } catch (err) {

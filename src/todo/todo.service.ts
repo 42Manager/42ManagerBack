@@ -43,6 +43,7 @@ export class TodoService {
         data[i].id = value.id;
         data[i].name = value.name;
         data[i].color = value.color;
+        data[i].is_share = value.is_share;
         data[i].created_at = format(value.created_at, 'yyyy-MM-dd HH:mm:ss');
       });
     } catch (err) {

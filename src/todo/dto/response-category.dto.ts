@@ -10,6 +10,9 @@ export class ResponesCategoryDto {
   @ApiProperty({ description: '카테고리 탭 색' })
   color: string;
 
+  @ApiProperty({ description: '공유 여부' })
+  is_share: boolean;
+
   @ApiProperty({ description: '카테고리 생성일' })
   created_at: string;
 }

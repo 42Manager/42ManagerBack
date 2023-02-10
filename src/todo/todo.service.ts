@@ -163,12 +163,13 @@ export class TodoService {
         data[i].id = value.id;
         data[i].categoryId = value.categoryId;
         data[i].content = value.content;
-        data[i].isDone = value.is_done;
-        data[i].startAt = format(value.start_at, 'yyyy-MM-dd HH:mm:ss');
-        if (value.is_done === true) {
-          data[i].finishAt = format(value.finish_at, 'yyyy-MM-dd HH:mm:ss');
-        }
-        data[i].createdAt = format(value.created_at, 'yyyy-MM-dd HH:mm:ss');
+        data[i].isDone = value.isDone;
+        data[i].startAt = format(value.startAt, 'yyyy-MM-dd HH:mm:ss');
+        data[i].finishAt =
+          value.isDone === true
+            ? format(value.finishAt, 'yyyy-MM-dd HH:mm:ss')
+            : null;
+        data[i].createdAt = format(value.createdAt, 'yyyy-MM-dd HH:mm:ss');
       });
     } catch (err) {
       console.log('task 검색 실패');

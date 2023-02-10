@@ -24,14 +24,14 @@ export class Category {
   name: string;
 
   @Column({ name: 'is_share', default: true })
-  is_share: boolean;
+  isShare: boolean;
 
   @Column({ name: 'color', default: '#56aa7a' })
   color: string;
 
   @CreateDateColumn({ name: 'created_at' })
-  created_at: Date;
+  createdAt: Date;
 
   @UpdateDateColumn({ name: 'updated_at', nullable: true })
-  updated_at: Date;
+  updatedAt: Date;
 }

@@ -40,10 +40,10 @@ export class RefreshTokenStrategy extends PassportStrategy(
 
     const storedRefreshToken = req.cookies.refreshToken;
 
-    if (storedRefreshToken !== account.refresh_token) {
+    if (storedRefreshToken !== account.refreshToken) {
       await this.accountRepository.save({
         uid: account.uid,
-        refresh_token: '',
+        refreshToken: '',
       });
       throw new HttpException('유효하지 않은 토큰', HttpStatus.UNAUTHORIZED);
     }

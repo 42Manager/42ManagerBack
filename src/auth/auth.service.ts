@@ -30,7 +30,7 @@ export class AuthService {
     const accessToken = this.jwtService.sign(
       {
         uid: account.uid,
-        intraId: account.intra_id,
+        intraId: account.intraId,
       },
       {
         expiresIn: this.config.get('JWT_ACCESS_EXPIRE'),
@@ -49,7 +49,7 @@ export class AuthService {
     try {
       await this.accountRepository.update(
         { uid: account.uid },
-        { refresh_token: refreshToken },
+        { refreshToken },
       );
     } catch (err) {
       console.log('refresh token 삽입 에러');
@@ -90,12 +90,12 @@ export class AuthService {
 
     try {
       const user: Account = await await this.accountRepository.findOne({
-        where: { intra_id: intraInfo.intraId },
+        where: { intraId: intraInfo.intraId },
       });
 
       if (user === null) {
         const insertedData = await this.accountRepository.save({
-          intra_id: intraInfo.intraId,
+          intraId: intraInfo.intraId,
         });
         uid = insertedData.uid;
       } else {

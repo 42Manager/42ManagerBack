@@ -16,7 +16,7 @@ export class Task {
   id: number;
 
   @ManyToOne(() => Category)
-  @JoinColumn({ name: 'category_id' })
+  @JoinColumn({ name: 'categoryId' })
   category: Category;
 
   @Column({ name: 'category_id' })
@@ -30,17 +30,17 @@ export class Task {
   content: string;
 
   @Column({ name: 'is_done', default: false })
-  is_done: boolean;
+  isDone: boolean;
 
   @Column({ name: 'start_at' })
-  start_at: Date;
+  startAt: Date;
 
   @Column({ name: 'finish_at', nullable: true })
-  finish_at: Date;
+  finishAt: Date;
 
   @CreateDateColumn({ name: 'created_at' })
-  created_at: Date;
+  createdAt: Date;
 
   @UpdateDateColumn({ name: 'updated_at', nullable: true })
-  updated_at: Date;
+  updatedAt: Date;
 }

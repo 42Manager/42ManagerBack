@@ -44,8 +44,8 @@ export class TodoService {
         data[i].id = value.id;
         data[i].name = value.name;
         data[i].color = value.color;
-        data[i].is_share = value.is_share;
-        data[i].created_at = format(value.created_at, 'yyyy-MM-dd HH:mm:ss');
+        data[i].isShare = value.isShare;
+        data[i].createdAt = format(value.createdAt, 'yyyy-MM-dd HH:mm:ss');
       });
     } catch (err) {
       console.log('category 검색 실패');
@@ -77,7 +77,7 @@ export class TodoService {
       const createResult = await this.categoryRepository.save(insertDataSet);
 
       data.id = createResult.id;
-      data.createdAt = format(createResult.created_at, 'yyyy-MM-dd HH:mm:ss');
+      data.createdAt = format(createResult.createdAt, 'yyyy-MM-dd HH:mm:ss');
     } catch (err) {
       if (err.detail?.indexOf('already exists') !== -1) {
         console.log('이미 존재하는 카테고리명으로 요청하여 category 생성 실패');
@@ -155,7 +155,7 @@ export class TodoService {
     try {
       const getResult = await this.taskRepository.find({
         where: { uid },
-        order: { start_at: 'desc', id: 'asc' },
+        order: { startAt: 'desc', id: 'asc' },
       });
 
       getResult.forEach((value, i) => {
@@ -186,7 +186,7 @@ export class TodoService {
   async createTask(uid: string, createTaskDto: CreateTaskDto) {
     const data = {
       id: 0,
-      created_at: '',
+      createdAt: '',
     };
 
     try {
@@ -194,11 +194,11 @@ export class TodoService {
         uid,
         category_id: createTaskDto.categoryId,
         content: createTaskDto.content,
-        start_at: createTaskDto.startAt,
+        startAt: new Date(createTaskDto.startAt),
       });
 
       data.id = createResult.id;
-      data.created_at = format(createResult.created_at, 'yyyy-MM-dd HH:mm:ss');
+      data.createdAt = format(createResult.createdAt, 'yyyy-MM-dd HH:mm:ss');
     } catch (err) {
       console.log('task 생성 실패');
       throw new InternalServerErrorException(err);

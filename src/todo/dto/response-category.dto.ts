@@ -11,8 +11,8 @@ export class ResponesCategoryDto {
   color: string;
 
   @ApiProperty({ description: '공유 여부' })
-  is_share: boolean;
+  isShare: boolean;
 
   @ApiProperty({ description: '카테고리 생성일' })
-  created_at: string;
+  createdAt: string;
 }

@@ -34,6 +34,43 @@ export class TodoService {
 
   getMonthlyTodoCount(uid: string, month: number) {}
 
+  async getAllTodo(uid: string) {
+    const data = {
+      category: [],
+      task: {},
+    };
+
+    try {
+      const getCategoryResult = await this.categoryRepository.find({
+        where: { uid },
+        order: { createdAt: 'asc' },
+      });
+
+      const getTaskResult = await this.taskRepository.find({
+        where: { uid },
+        order: { startAt: 'desc', createdAt: 'asc' },
+      });
+
+      getCategoryResult.forEach((value) => {
+        data['category'].push(value);
+      });
+      getTaskResult.forEach((value) => {
+        if (data['task'][format(value.startAt, 'yyyy-MM-dd')] == null) {
+          data['task'][format(value.startAt, 'yyyy-MM-dd')] = [];
+        }
+        data['task'][format(value.startAt, 'yyyy-MM-dd')].push(value);
+      });
+    } catch (err) {
+      console.log('전체 Todo 목록 검색 실패');
+      throw new InternalServerErrorException(err);
+    }
+
+    return {
+      status: true,
+      data,
+    };
+  }
+
   async getCategory(uid: string) {
     const data: ResponesCategoryDto[] = [];
 

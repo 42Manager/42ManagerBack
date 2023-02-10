@@ -35,6 +35,12 @@ export class TodoController {
     return this.todoService.getMonthlyTodoCount(account.uid, month);
   }
 
+  @ApiOperation({ summary: '전체 Todo 목록 검색' })
+  @Get()
+  getAllTodo(@JwtPayload() account: Account) {
+    return this.todoService.getAllTodo(account.uid);
+  }
+
   @ApiOperation({ summary: '카테고리 검색' })
   @Get('category')
   getCategory(@JwtPayload() account: Account) {

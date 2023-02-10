@@ -104,17 +104,16 @@ export class TodoController {
   @ApiOperation({ summary: 'task 수정' })
   @Patch('task/:id')
   updateTask(
-    @JwtPayload() account: Account,
     @Param('id') taskId: number,
     @Body() updateTaskDto: UpdateTaskDto,
   ) {
-    return this.todoService.updateTask(account.uid, taskId, updateTaskDto);
+    return this.todoService.updateTask(taskId, updateTaskDto);
   }
 
   @ApiOperation({ summary: 'task 삭제' })
   @Delete('task/:id')
-  deleteTask(@JwtPayload() account: Account, @Param('id') taskId: number) {
-    return this.todoService.deleteTask(account.uid, taskId);
+  deleteTask(@Param('id') taskId: number) {
+    return this.todoService.deleteTask(taskId);
   }
 
   @ApiOperation({ summary: '42 task 검색' })

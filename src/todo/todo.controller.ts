@@ -53,24 +53,16 @@ export class TodoController {
   @ApiOperation({ summary: '카테고리 수정' })
   @Patch('category/:id')
   updateCategory(
-    @JwtPayload() account: Account,
     @Param('id') categoryId: number,
     @Body() updateTodoDto: UpdateCategoryDto,
   ) {
-    return this.todoService.updateCategory(
-      account.uid,
-      categoryId,
-      updateTodoDto,
-    );
+    return this.todoService.updateCategory(categoryId, updateTodoDto);
   }
 
   @ApiOperation({ summary: '카테고리 삭제' })
   @Delete('category/:id')
-  deleteCategory(
-    @JwtPayload() account: Account,
-    @Param('id') categoryId: number,
-  ) {
-    return this.todoService.deleteCategory(account.uid, categoryId);
+  deleteCategory(@Param('id') categoryId: number) {
+    return this.todoService.deleteCategory(categoryId);
   }
 
   @ApiOperation({ summary: '42 카테고리 검색' })
@@ -124,7 +116,7 @@ export class TodoController {
   deleteTask(@JwtPayload() account: Account, @Param('id') taskId: number) {
     return this.todoService.deleteTask(account.uid, taskId);
   }
-  
+
   @ApiOperation({ summary: '42 task 검색' })
   @Get('ft-task')
   getFtTask(@JwtPayload() account: Account) {}

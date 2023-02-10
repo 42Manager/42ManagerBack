@@ -25,6 +25,7 @@ import { FtOauthModule } from './ft-oauth/ft-oauth.module';
         database: configService.get('DB_NAME'),
         synchronize: false,
         entities: [__dirname + '/**/*.entity.{js,ts}'],
+        logging: true,
       }),
     }),
   ],

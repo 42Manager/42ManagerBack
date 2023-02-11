@@ -24,7 +24,7 @@ export class AccessTokenStrategy extends PassportStrategy(
 
     const account = new Account();
     account.uid = payload.uid;
-    account.intra_id = payload.uid;
+    account.intraId = payload.intraId;
 
     return account;
   }

@@ -35,6 +35,12 @@ export class TodoController {
     return this.todoService.getMonthlyTodoCount(account.uid, month);
   }
 
+  @ApiOperation({ summary: '전체 Todo 목록 검색' })
+  @Get()
+  getAllTodo(@JwtPayload() account: Account) {
+    return this.todoService.getAllTodo(account.uid);
+  }
+
   @ApiOperation({ summary: '카테고리 검색' })
   @Get('category')
   getCategory(@JwtPayload() account: Account) {
@@ -53,24 +59,16 @@ export class TodoController {
   @ApiOperation({ summary: '카테고리 수정' })
   @Patch('category/:id')
   updateCategory(
-    @JwtPayload() account: Account,
     @Param('id') categoryId: number,
     @Body() updateTodoDto: UpdateCategoryDto,
   ) {
-    return this.todoService.updateCategory(
-      account.uid,
-      categoryId,
-      updateTodoDto,
-    );
+    return this.todoService.updateCategory(categoryId, updateTodoDto);
   }
 
   @ApiOperation({ summary: '카테고리 삭제' })
   @Delete('category/:id')
-  deleteCategory(
-    @JwtPayload() account: Account,
-    @Param('id') categoryId: number,
-  ) {
-    return this.todoService.deleteCategory(account.uid, categoryId);
+  deleteCategory(@Param('id') categoryId: number) {
+    return this.todoService.deleteCategory(categoryId);
   }
 
   @ApiOperation({ summary: '42 카테고리 검색' })
@@ -112,19 +110,18 @@ export class TodoController {
   @ApiOperation({ summary: 'task 수정' })
   @Patch('task/:id')
   updateTask(
-    @JwtPayload() account: Account,
     @Param('id') taskId: number,
     @Body() updateTaskDto: UpdateTaskDto,
   ) {
-    return this.todoService.updateTask(account.uid, taskId, updateTaskDto);
+    return this.todoService.updateTask(taskId, updateTaskDto);
   }
 
   @ApiOperation({ summary: 'task 삭제' })
   @Delete('task/:id')
-  deleteTask(@JwtPayload() account: Account, @Param('id') taskId: number) {
-    return this.todoService.deleteTask(account.uid, taskId);
+  deleteTask(@Param('id') taskId: number) {
+    return this.todoService.deleteTask(taskId);
   }
-  
+
   @ApiOperation({ summary: '42 task 검색' })
   @Get('ft-task')
   getFtTask(@JwtPayload() account: Account) {}

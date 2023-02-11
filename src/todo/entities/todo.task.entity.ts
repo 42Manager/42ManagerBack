@@ -16,28 +16,31 @@ export class Task {
   id: number;
 
   @ManyToOne(() => Category)
-  @JoinColumn({ name: 'category_id' })
-  category_id: number;
+  @JoinColumn({ name: 'categoryId' })
+  category: Category;
+
+  @Column({ name: 'category_id' })
+  categoryId: number;
 
   @ManyToOne(() => Account)
-  @JoinColumn({ name: 'account' })
+  @JoinColumn({ name: 'uid' })
   uid: string;
 
   @Column({ name: 'content' })
   content: string;
 
-  @Column({ name: 'is_done' })
-  is_done: boolean;
+  @Column({ name: 'is_done', default: false })
+  isDone: boolean;
 
   @Column({ name: 'start_at' })
-  start_at: Date;
+  startAt: Date;
 
-  @Column({ name: 'finish_at' })
-  finish_at: Date;
+  @Column({ name: 'finish_at', nullable: true })
+  finishAt: Date;
 
   @CreateDateColumn({ name: 'created_at' })
-  created_at: Date;
+  createdAt: Date;
 
-  @UpdateDateColumn({ name: 'updated_at' })
-  updated_at: Date;
+  @UpdateDateColumn({ name: 'updated_at', nullable: true })
+  updatedAt: Date;
 }

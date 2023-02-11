@@ -23,12 +23,15 @@ export class Category {
   @Column({ name: 'name' })
   name: string;
 
-  @Column({ name: 'is_share' })
-  is_share: boolean;
+  @Column({ name: 'is_share', default: true })
+  isShare: boolean;
+
+  @Column({ name: 'color', default: '#56aa7a' })
+  color: string;
 
   @CreateDateColumn({ name: 'created_at' })
-  created_at: Date;
+  createdAt: Date;
 
-  @UpdateDateColumn({ name: 'updated_at' })
-  updated_at: Date;
+  @UpdateDateColumn({ name: 'updated_at', nullable: true })
+  updatedAt: Date;
 }

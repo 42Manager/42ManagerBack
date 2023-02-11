@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Category } from './entities/todo.category.entity';
@@ -10,6 +14,9 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import { format } from 'date-fns-tz';
+import { ResponesCategoryDto } from './dto/response-category.dto';
+import { ResponseTaskDto } from './dto/response-task.dto';
 
 @Injectable()
 export class TodoService {
@@ -26,20 +33,265 @@ export class TodoService {
   ) {}
 
   getMonthlyTodoCount(uid: string, month: number) {}
-  getCategory(uid: string) {}
-  createCategory(uid: string, createCategoryDto: CreateCategoryDto) {}
-  updateCategory(
-    uid: string,
+
+  async getAllTodo(uid: string) {
+    const data = {
+      category: [],
+      task: {},
+    };
+
+    try {
+      const getCategoryResult = await this.categoryRepository.find({
+        where: { uid },
+        order: { createdAt: 'asc' },
+      });
+
+      const getTaskResult = await this.taskRepository.find({
+        where: { uid },
+        order: { startAt: 'desc', createdAt: 'asc' },
+      });
+
+      getCategoryResult.forEach((value) => {
+        data['category'].push(value);
+      });
+      getTaskResult.forEach((value) => {
+        if (data['task'][format(value.startAt, 'yyyy-MM-dd')] == null) {
+          data['task'][format(value.startAt, 'yyyy-MM-dd')] = [];
+        }
+        data['task'][format(value.startAt, 'yyyy-MM-dd')].push(value);
+      });
+    } catch (err) {
+      console.log('전체 Todo 목록 검색 실패');
+      throw new InternalServerErrorException(err);
+    }
+
+    return {
+      status: true,
+      data,
+    };
+  }
+
+  async getCategory(uid: string) {
+    const data: ResponesCategoryDto[] = [];
+
+    try {
+      const categories = await this.categoryRepository.find({ where: { uid } });
+      categories.forEach((value, i) => {
+        data.push(new ResponesCategoryDto());
+        data[i].id = value.id;
+        data[i].name = value.name;
+        data[i].color = value.color;
+        data[i].isShare = value.isShare;
+        data[i].createdAt = format(value.createdAt, 'yyyy-MM-dd HH:mm:ss');
+      });
+    } catch (err) {
+      console.log('category 검색 실패');
+      throw new InternalServerErrorException(err);
+    }
+
+    return {
+      status: true,
+      data,
+    };
+  }
+
+  async createCategory(uid: string, createCategoryDto: CreateCategoryDto) {
+    const data = {
+      id: 0,
+      createdAt: '',
+    };
+
+    try {
+      const insertDataSet = {
+        uid,
+        name: createCategoryDto.name,
+      };
+
+      if (createCategoryDto.color) {
+        insertDataSet['color'] = createCategoryDto.color;
+      }
+
+      const createResult = await this.categoryRepository.save(insertDataSet);
+
+      data.id = createResult.id;
+      data.createdAt = format(createResult.createdAt, 'yyyy-MM-dd HH:mm:ss');
+    } catch (err) {
+      if (err.detail?.indexOf('already exists') !== -1) {
+        console.log('이미 존재하는 카테고리명으로 요청하여 category 생성 실패');
+        throw new BadRequestException(err.detail);
+      }
+
+      console.log('category 생성 실패');
+      throw new InternalServerErrorException(err);
+    }
+
+    return {
+      status: true,
+      data,
+    };
+  }
+
+  async updateCategory(
     categoryId: number,
     updateCategoryDto: UpdateCategoryDto,
-  ) {}
-  deleteCategory(uid: string, categoryId: number) {}
+  ) {
+    try {
+      const updateResult = await this.categoryRepository.update(
+        {
+          id: categoryId,
+        },
+        {
+          name: updateCategoryDto.newName,
+        },
+      );
+
+      if (updateResult.affected === 0) {
+        console.log('변경된 것이 없음');
+        throw new BadRequestException(
+          'successful execution but nothing update',
+        );
+      }
+    } catch (err) {
+      console.log('category 수정 실패');
+      throw new InternalServerErrorException(err);
+    }
+
+    return {
+      status: true,
+      data: {
+        name: updateCategoryDto.newName,
+      },
+    };
+  }
+
+  async deleteCategory(categoryId: number) {
+    try {
+      const deleteResult = await this.categoryRepository.delete({
+        id: categoryId,
+      });
+
+      if (deleteResult.affected === 0) {
+        console.log('존재하지 않는 카테고리 삭제 시도');
+        throw new BadRequestException('not exist category');
+      }
+    } catch (err) {
+      console.log('category 삭제 실패 또는 이미 지워짐');
+      throw new InternalServerErrorException(err);
+    }
+
+    return {
+      status: true,
+    };
+  }
+
   get42Category(uid: string) {}
-  getTask(uid: string) {}
+
+  async getTask(uid: string) {
+    const data: ResponseTaskDto[] = [];
+
+    try {
+      const getResult = await this.taskRepository.find({
+        where: { uid },
+        order: { startAt: 'desc', id: 'asc' },
+      });
+
+      getResult.forEach((value, i) => {
+        data.push(new ResponseTaskDto());
+        data[i].id = value.id;
+        data[i].categoryId = value.categoryId;
+        data[i].content = value.content;
+        data[i].isDone = value.isDone;
+        data[i].startAt = format(value.startAt, 'yyyy-MM-dd HH:mm:ss');
+        data[i].finishAt =
+          value.isDone === true
+            ? format(value.finishAt, 'yyyy-MM-dd HH:mm:ss')
+            : null;
+        data[i].createdAt = format(value.createdAt, 'yyyy-MM-dd HH:mm:ss');
+      });
+    } catch (err) {
+      console.log('task 검색 실패');
+      throw new InternalServerErrorException(err);
+    }
+
+    return {
+      status: true,
+      data,
+    };
+  }
+
   getMonthlyTask(uid: string, month: number) {}
-  createTask(uid: string, createTaskDto: CreateTaskDto) {}
-  updateTask(uid: string, taskId: number, updateTaskDto: UpdateTaskDto) {}
-  deleteTask(uid: string, taskId: number) {}
+
+  async createTask(uid: string, createTaskDto: CreateTaskDto) {
+    const data = {
+      id: 0,
+      createdAt: '',
+    };
+
+    try {
+      const createResult = await this.taskRepository.save({
+        uid,
+        category_id: createTaskDto.categoryId,
+        content: createTaskDto.content,
+        startAt: new Date(createTaskDto.startAt),
+      });
+
+      data.id = createResult.id;
+      data.createdAt = format(createResult.createdAt, 'yyyy-MM-dd HH:mm:ss');
+    } catch (err) {
+      console.log('task 생성 실패');
+      throw new InternalServerErrorException(err);
+    }
+
+    return {
+      status: true,
+      data,
+    };
+  }
+
+  async updateTask(taskId: number, updateTaskDto: UpdateTaskDto) {
+    try {
+      const updateResult = await this.taskRepository.update(
+        {
+          id: taskId,
+        },
+        {
+          content: updateTaskDto.newContent,
+        },
+      );
+
+      if (updateResult.affected === 0) {
+        console.log('task 수정 실패');
+        throw new BadRequestException(
+          'successful execution but nothing update',
+        );
+      }
+    } catch (err) {
+      throw new InternalServerErrorException(err);
+    }
+
+    return {
+      status: true,
+      newContent: updateTaskDto.newContent,
+    };
+  }
+
+  async deleteTask(taskId: number) {
+    try {
+      const deleteResult = await this.taskRepository.delete({ id: taskId });
+
+      if (deleteResult.affected === 0) {
+        console.log('존재하지 않는 카테고리 삭제 시도');
+        throw new BadRequestException('not exist category');
+      }
+    } catch (err) {
+      throw new InternalServerErrorException(err);
+    }
+
+    return {
+      status: true,
+    };
+  }
+
   getFtTask(uid: string) {}
   createFtTask(uid: string, categoryId: number, createTaskDto: CreateTaskDto) {}
   updateFtTask(uid: string, categoryId: number, updateTaskDto: UpdateTaskDto) {}

@@ -79,9 +79,8 @@ export class AuthService {
       );
 
       intraInfo = {
-        id: intraInfoResult.data.id,
         intraId: intraInfoResult.data.login,
-        photoUrl: intraInfoResult.data.image.link,
+        imageUrl: intraInfoResult.data.image.link,
       };
     } catch (err) {
       console.log('42 사용자 정보 확인 실패');
@@ -96,6 +95,7 @@ export class AuthService {
       if (user === null) {
         const insertedData = await this.accountRepository.save({
           intraId: intraInfo.intraId,
+          imageUrl: intraInfo.imageUrl,
         });
         uid = insertedData.uid;
       } else {
@@ -140,6 +140,7 @@ export class AuthService {
       accessToken: accessToken,
       refreshToken: refreshToken,
       ftAccessToken: ftAccessToken,
+      imageUrl: intraInfo.imageUrl,
     };
   }
 }

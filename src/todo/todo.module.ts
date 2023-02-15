@@ -7,9 +7,19 @@ import { Category } from './entities/todo.category.entity';
 import { Task } from './entities/todo.task.entity';
 import { FtCategory } from './entities/todo.ft_category.entity';
 import { FtTask } from './entities/todo.ft_task.entity';
+import { FtCategoryKind } from './entities/todo.ft_category_kind.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Account, Category, Task, FtCategory, FtTask])],
+  imports: [
+    TypeOrmModule.forFeature([
+      Account,
+      Category,
+      Task,
+      FtCategory,
+      FtTask,
+      FtCategoryKind,
+    ]),
+  ],
   controllers: [TodoController],
   providers: [TodoService],
 })

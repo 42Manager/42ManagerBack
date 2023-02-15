@@ -9,26 +9,36 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Account } from 'src/auth/entities/account.entity';
+import { FtCategoryKind } from './todo.ft_category_kind.entity';
 
 @Entity({ name: 'ft_category' })
-@Unique(['uid', 'name'])
+@Unique(['categoryKindId', 'uid'])
 export class FtCategory {
-  @PrimaryGeneratedColumn({ name: 'id' })
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
+  @ManyToOne(() => FtCategoryKind)
+  @JoinColumn({ name: 'category_kind_id', referencedColumnName: 'id' })
+  categoryKindId: number;
+
   @ManyToOne(() => Account)
-  @JoinColumn({ name: 'uid' })
+  @JoinColumn({ name: 'uid', referencedColumnName: 'uid' })
   uid: string;
 
-  @Column({ name: 'name' })
-  name: string;
-
-  @Column({ name: 'is_share' })
+  @Column({ name: 'is_share', default: true, type: 'boolean' })
   is_share: boolean;
 
-  @CreateDateColumn({ name: 'created_at' })
+  @CreateDateColumn({
+    name: 'created_at',
+    default: () => 'now()',
+    type: 'timestamp without time zone',
+  })
   created_at: Date;
 
-  @UpdateDateColumn({ name: 'updated_at' })
+  @UpdateDateColumn({
+    name: 'updated_at',
+    nullable: true,
+    type: 'timestamp without time zone',
+  })
   updated_at: Date;
 }

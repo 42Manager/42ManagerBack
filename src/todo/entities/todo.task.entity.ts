@@ -12,35 +12,47 @@ import { Account } from 'src/auth/entities/account.entity';
 
 @Entity({ name: 'task' })
 export class Task {
-  @PrimaryGeneratedColumn({ name: 'id' })
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
   @ManyToOne(() => Category)
-  @JoinColumn({ name: 'categoryId' })
+  @JoinColumn({ name: 'category_id', referencedColumnName: 'id' })
   category: Category;
 
   @Column({ name: 'category_id' })
   categoryId: number;
 
   @ManyToOne(() => Account)
-  @JoinColumn({ name: 'uid' })
+  @JoinColumn({ name: 'uid', referencedColumnName: 'uid' })
   uid: string;
 
-  @Column({ name: 'content' })
+  @Column({ name: 'content', type: 'text' })
   content: string;
 
-  @Column({ name: 'is_done', default: false })
+  @Column({ name: 'is_done', default: false, type: 'boolean' })
   isDone: boolean;
 
-  @Column({ name: 'start_at' })
+  @Column({ name: 'started_at', type: 'timestamp without time zone' })
   startAt: Date;
 
-  @Column({ name: 'finish_at', nullable: true })
+  @Column({
+    name: 'finished_at',
+    nullable: true,
+    type: 'timestamp without time zone',
+  })
   finishAt: Date;
 
-  @CreateDateColumn({ name: 'created_at' })
+  @CreateDateColumn({
+    name: 'created_at',
+    default: () => 'now()',
+    type: 'timestamp without time zone',
+  })
   createdAt: Date;
 
-  @UpdateDateColumn({ name: 'updated_at', nullable: true })
+  @UpdateDateColumn({
+    name: 'updated_at',
+    nullable: true,
+    type: 'timestamp without time zone',
+  })
   updatedAt: Date;
 }

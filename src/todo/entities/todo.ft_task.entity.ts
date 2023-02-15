@@ -12,32 +12,44 @@ import { Account } from 'src/auth/entities/account.entity';
 
 @Entity({ name: 'ft_task' })
 export class FtTask {
-  @PrimaryGeneratedColumn({ name: 'id' })
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
   @ManyToOne(() => FtCategory)
-  @JoinColumn({ name: 'ft_category_id' })
+  @JoinColumn({ name: 'ft_category_id', referencedColumnName: 'id' })
   ft_category_id: number;
 
   @ManyToOne(() => Account)
-  @JoinColumn({ name: 'account' })
+  @JoinColumn({ name: 'uid', referencedColumnName: 'uid' })
   uid: string;
 
-  @Column({ name: 'content' })
+  @Column({ name: 'content', type: 'text' })
   content: string;
 
-  @Column({ name: 'is_done' })
+  @Column({ name: 'is_done', default: false, type: 'boolean' })
   is_done: boolean;
 
-  @Column({ name: 'start_at' })
+  @Column({ name: 'started_at', type: 'timestamp without time zone' })
   start_at: Date;
 
-  @Column({ name: 'finish_at' })
+  @Column({
+    name: 'finished_at',
+    nullable: true,
+    type: 'timestamp without time zone',
+  })
   finish_at: Date;
 
-  @CreateDateColumn({ name: 'created_at' })
+  @CreateDateColumn({
+    name: 'created_at',
+    default: () => 'now()',
+    type: 'timestamp without time zone',
+  })
   created_at: Date;
 
-  @UpdateDateColumn({ name: 'updated_at' })
+  @UpdateDateColumn({
+    name: 'updated_at',
+    nullable: true,
+    type: 'timestamp without time zone',
+  })
   updated_at: Date;
 }

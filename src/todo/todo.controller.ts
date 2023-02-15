@@ -72,7 +72,7 @@ export class TodoController {
   }
 
   @ApiOperation({ summary: '42 카테고리 검색' })
-  @Get('ft-category')
+  @Get('42category')
   get42Category(@JwtPayload() account: Account) {
     // cookie에 있는 인트라 토큰 받도록 구현 필요
     // 42 inner 과제 목록과 현재 42서울 사용자가 등록한 과제 목록 가져오기
@@ -81,7 +81,7 @@ export class TodoController {
   }
 
   @ApiOperation({ summary: '42 카테고리 삭제' })
-  @Delete('ft-category/:id')
+  @Delete('42category/:id')
   delete42Category() {}
 
   @ApiOperation({ summary: '전체 task 검색' })
@@ -123,18 +123,18 @@ export class TodoController {
   }
 
   @ApiOperation({ summary: '42 task 검색' })
-  @Get('ft-task')
+  @Get('42task')
   getFtTask(@JwtPayload() account: Account) {}
 
   @ApiOperation({ summary: '42 task 생성' })
-  @Post('ft-task')
+  @Post('42task')
   createFtTask(@JwtPayload() account: Account) {}
 
   @ApiOperation({ summary: '42 task 수정' })
-  @Patch('ft-task/:id')
+  @Patch('42task/:id')
   updateFtTask(@JwtPayload() account: Account) {}
 
   @ApiOperation({ summary: '42 task 삭제' })
-  @Delete('ft-task/:id')
+  @Delete('42task/:id')
   deleteFtTask(@JwtPayload() account: Account) {}
 }

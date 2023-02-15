@@ -18,8 +18,8 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { Account } from './entities/auth.entity';
 import { JwtRefreshTokenGuard } from './guard/jwt.auth.guard';
+import { Account } from './entities/account.entity';
 import { Response } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { Cookies } from '../decorator/cookie-jwt.decorator';

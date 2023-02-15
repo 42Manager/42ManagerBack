@@ -13,7 +13,7 @@ import { TodoService } from './todo.service';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAccessTokenGuard } from 'src/auth/guard/jwt.auth.guard';
 import { JwtPayload } from 'src/decorator/jwt-payload.decorator';
-import { Account } from 'src/auth/entities/auth.entity';
+import { Account } from 'src/auth/entities/account.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { CreateTaskDto } from './dto/create-task.dto';

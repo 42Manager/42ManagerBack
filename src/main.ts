@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { Account } from './auth/entities/auth.entity';
+import { Account } from './auth/entities/account.entity';
 import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {

@@ -3,7 +3,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Repository } from 'typeorm';
-import { Account } from './entities/auth.entity';
+import { Account } from './entities/account.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()

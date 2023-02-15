@@ -8,7 +8,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Category } from './todo.category.entity';
-import { Account } from './todo.account.entity';
+import { Account } from 'src/auth/entities/account.entity';
 
 @Entity({ name: 'task' })
 export class Task {

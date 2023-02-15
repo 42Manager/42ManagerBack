@@ -8,7 +8,7 @@ import {
   Column,
   Unique,
 } from 'typeorm';
-import { Account } from './todo.account.entity';
+import { Account } from 'src/auth/entities/account.entity';
 
 @Entity({ name: 'category' })
 @Unique(['uid', 'name'])

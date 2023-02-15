@@ -8,7 +8,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { FtCategory } from './todo.ft_category.entity';
-import { Account } from './todo.account.entity';
+import { Account } from 'src/auth/entities/account.entity';
 
 @Entity({ name: 'ft_task' })
 export class FtTask {

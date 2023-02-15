@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { TodoService } from './todo.service';
 import { TodoController } from './todo.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Account } from './entities/todo.account.entity';
+import { Account } from 'src/auth/entities/account.entity';
 import { Category } from './entities/todo.category.entity';
 import { Task } from './entities/todo.task.entity';
 import { FtCategory } from './entities/todo.ft_category.entity';

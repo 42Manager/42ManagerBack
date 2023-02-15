@@ -9,7 +9,7 @@ import { Category } from './entities/todo.category.entity';
 import { Task } from './entities/todo.task.entity';
 import { FtCategory } from './entities/todo.ft_category.entity';
 import { FtTask } from './entities/todo.ft_task.entity';
-import { Account } from './entities/todo.account.entity';
+import { Account } from 'src/auth/entities/account.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { CreateTaskDto } from './dto/create-task.dto';

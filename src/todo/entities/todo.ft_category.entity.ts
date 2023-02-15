@@ -8,7 +8,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { Account } from './todo.account.entity';
+import { Account } from 'src/auth/entities/account.entity';
 
 @Entity({ name: 'ft_category' })
 @Unique(['uid', 'name'])

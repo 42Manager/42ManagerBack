@@ -8,6 +8,7 @@ import { Task } from './entities/todo.task.entity';
 import { FtCategory } from './entities/todo.ft_category.entity';
 import { FtTask } from './entities/todo.ft_task.entity';
 import { FtCategoryKind } from './entities/todo.ft_category_kind.entity';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { FtCategoryKind } from './entities/todo.ft_category_kind.entity';
       FtTask,
       FtCategoryKind,
     ]),
+    HttpModule,
   ],
   controllers: [TodoController],
   providers: [TodoService],

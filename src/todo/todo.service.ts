@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Injectable,
   InternalServerErrorException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -17,6 +18,8 @@ import { UpdateTaskDto } from './dto/update-task.dto';
 import { format } from 'date-fns-tz';
 import { ResponesCategoryDto } from './dto/response-category.dto';
 import { ResponseTaskDto } from './dto/response-task.dto';
+import { HttpService } from '@nestjs/axios';
+import { FtCategoryKind } from './entities/todo.ft_category_kind.entity';
 
 @Injectable()
 export class TodoService {
@@ -30,6 +33,9 @@ export class TodoService {
     private ftCategoryRepository: Repository<FtCategory>,
     @InjectRepository(FtTask)
     private ftTaskRepository: Repository<FtTask>,
+    @InjectRepository(FtCategoryKind)
+    private ftCategoryKindRepository: Repository<FtCategoryKind>,
+    private readonly httpService: HttpService,
   ) {}
 
   getMonthlyTodoCount(uid: string, month: number) {}
@@ -185,6 +191,87 @@ export class TodoService {
   }
 
   get42Category(uid: string) {}
+
+  async get42CategoryKind(ftAccessToken: string) {
+    const intraInfo = {};
+
+    try {
+      const subjects = await this.httpService.axiosRef.get(
+        'https://api.intra.42.fr/v2/me',
+        {
+          headers: {
+            Authorization: `Bearer ${ftAccessToken}`,
+            'content-type': 'application/json',
+          },
+        },
+      );
+
+      const projects = subjects.data.projects_users.filter((projects) =>
+        projects.cursus_ids.includes(21),
+      );
+
+      intraInfo['inProgress'] = projects
+        .filter((filterdData) => filterdData.marked === false)
+        .map((mappedData) => {
+          return {
+            categoryKindId: -1,
+            name: mappedData.project.name,
+          };
+        });
+      intraInfo['finished'] = projects
+        .filter((filterdData) => filterdData.marked === true)
+        .map((mappedData) => {
+          return {
+            categoryKindId: -1,
+            name: mappedData.project.name,
+          };
+        });
+    } catch (err) {
+      console.log('42 사용자 정보 확인 실패');
+      console.log(err);
+      throw new UnauthorizedException(err);
+    }
+
+    const ftCategoryKind: FtCategoryKind[] =
+      await this.ftCategoryKindRepository.find();
+
+    intraInfo['inProgress'].forEach((inProgressItem) => {
+      const foundCategoryKind = ftCategoryKind.find(
+        (categoryKindItem) => inProgressItem.name === categoryKindItem.name,
+      );
+      if (foundCategoryKind !== undefined) {
+        inProgressItem.categoryKindId = foundCategoryKind.id;
+      }
+    });
+
+    intraInfo['finished'].forEach((finishedItem) => {
+      const foundCategoryKind = ftCategoryKind.find(
+        (categoryKindItem) => finishedItem.name === categoryKindItem.name,
+      );
+      if (foundCategoryKind !== undefined) {
+        finishedItem.categoryKindId = foundCategoryKind.id;
+      }
+    });
+
+    intraInfo['forbidden'] = ftCategoryKind
+      .filter(
+        (filterdData) =>
+          intraInfo['inProgress'].findIndex(
+            (item) => filterdData.name === item.name,
+          ) == -1 &&
+          intraInfo['finished'].findIndex(
+            (item) => filterdData.name === item.name,
+          ) == -1,
+      )
+      .map((mappedData) => {
+        return { categoryKindId: mappedData.id, name: mappedData.name };
+      });
+
+    return {
+      status: true,
+      data: intraInfo,
+    };
+  }
 
   async getTask(uid: string) {
     const data: ResponseTaskDto[] = [];

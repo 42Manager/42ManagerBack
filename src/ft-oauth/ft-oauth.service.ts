@@ -11,9 +11,10 @@ export class FtOauthService {
 
   async get42token(code: string) {
     let ftAccessToken;
+    let ftRefreshToken;
 
     try {
-      const accessTokenResult = await this.httpService.axiosRef.post(
+      const tokenResult = await this.httpService.axiosRef.post(
         'https://api.intra.42.fr/oauth/token',
         JSON.stringify({
           grant_type: 'authorization_code',
@@ -29,15 +30,17 @@ export class FtOauthService {
         },
       );
 
-      ftAccessToken = accessTokenResult.data.access_token;
+      ftAccessToken = tokenResult.data.access_token;
+      ftRefreshToken = tokenResult.data.refresh_token;
     } catch (err) {
-      console.log('42 access token 발급 실패');
+      console.log('42 token 발급 실패');
       throw new HttpException(err, HttpStatus.UNAUTHORIZED);
     }
 
     return {
       status: true,
       ftAccessToken,
+      ftRefreshToken,
     };
   }
 

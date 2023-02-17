@@ -17,7 +17,6 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
-import { Cookies } from 'src/decorator/cookie-jwt.decorator';
 import { CreateFtCategoryDto } from './dto/create-ft-category.dto';
 
 @ApiTags('Todo')
@@ -74,7 +73,7 @@ export class TodoController {
 
   @ApiOperation({ summary: '42 카테고리 선택 목록 검색' })
   @Get('42category-kind')
-  get42CategoryKind(@Cookies('ftAccessToken') ftAccessToken: string) {
+  get42CategoryKind(@Body('ftAccessToken') ftAccessToken: string) {
     return this.todoService.get42CategoryKind(ftAccessToken);
   }
 

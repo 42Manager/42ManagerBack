@@ -54,13 +54,16 @@ export class FtOauthController {
   ) {
     const serviceResult = await this.ftOauthService.get42token(code);
 
-    res.cookie('ftAccessToken', serviceResult.ftAccessToken, {
+    res.cookie('ftRefreshToken', serviceResult.ftRefreshToken, {
       domain: process.env.FRONT_DOMAIN,
       httpOnly: true,
       // secure: true,
     });
 
-    return serviceResult.status;
+    return {
+      status: true,
+      ftAccessToken: serviceResult.ftAccessToken,
+    };
   }
 
   @ApiOperation({ summary: '42 access token 재발급' })

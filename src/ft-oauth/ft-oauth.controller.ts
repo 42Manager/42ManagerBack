@@ -17,6 +17,7 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { Cookies } from 'src/decorator/cookie-jwt.decorator';
 
 @ApiTags('42OAuth')
 @Controller('42oauth')
@@ -60,5 +61,29 @@ export class FtOauthController {
     });
 
     return serviceResult.status;
+  }
+
+  @ApiOperation({ summary: '42 access token 재발급' })
+  @ApiOkResponse({ description: '42 access token 재발급 성공' })
+  @ApiUnauthorizedResponse({ description: '42 access token 재발급 실패' })
+  @Post('token/refresh-token')
+  async reissuance42token(
+    @Cookies('ftRefreshToken') refreshToken: string,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const serviceResult = await this.ftOauthService.reissuance42token(
+      refreshToken,
+    );
+
+    res.cookie('ftRefreshToken', serviceResult.ftRefreshToken, {
+      domain: process.env.FRONT_DOMAIN,
+      httpOnly: true,
+      // secure: true,
+    });
+
+    return {
+      status: true,
+      ftAccessToken: serviceResult.ftAccessToken,
+    };
   }
 }

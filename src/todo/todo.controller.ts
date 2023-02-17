@@ -6,18 +6,19 @@ import {
   Param,
   Patch,
   Post,
-  Query,
   UseGuards,
 } from '@nestjs/common';
 import { TodoService } from './todo.service';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAccessTokenGuard } from 'src/auth/guard/jwt.auth.guard';
 import { JwtPayload } from 'src/decorator/jwt-payload.decorator';
-import { Account } from 'src/auth/entities/auth.entity';
+import { Account } from 'src/auth/entities/account.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import { Cookies } from 'src/decorator/cookie-jwt.decorator';
+import { CreateFtCategoryDto } from './dto/create-ft-category.dto';
 
 @ApiTags('Todo')
 @ApiBearerAuth()
@@ -25,15 +26,6 @@ import { UpdateTaskDto } from './dto/update-task.dto';
 @UseGuards(JwtAccessTokenGuard)
 export class TodoController {
   constructor(private readonly todoService: TodoService) {}
-
-  @ApiOperation({ summary: '월간 일별 task 개수 검색' })
-  @Get('count')
-  getMonthlyTodoCount(
-    @JwtPayload() account: Account,
-    @Query('month') month: number,
-  ) {
-    return this.todoService.getMonthlyTodoCount(account.uid, month);
-  }
 
   @ApiOperation({ summary: '전체 Todo 목록 검색' })
   @Get()
@@ -65,37 +57,61 @@ export class TodoController {
     return this.todoService.updateCategory(categoryId, updateTodoDto);
   }
 
+  @ApiOperation({ summary: '카테고리 공유 여부 수정' })
+  @Patch('category/:id/is-share')
+  updateCategoryIsShare(
+    @Param('id') categoryId: number,
+    @Body('isShare') isShare: boolean,
+  ) {
+    return this.todoService.updateCategoryIsShare(categoryId, isShare);
+  }
+
   @ApiOperation({ summary: '카테고리 삭제' })
   @Delete('category/:id')
   deleteCategory(@Param('id') categoryId: number) {
     return this.todoService.deleteCategory(categoryId);
   }
 
+  @ApiOperation({ summary: '42 카테고리 선택 목록 검색' })
+  @Get('42category-kind')
+  get42CategoryKind(@Cookies('ftAccessToken') ftAccessToken: string) {
+    return this.todoService.get42CategoryKind(ftAccessToken);
+  }
+
   @ApiOperation({ summary: '42 카테고리 검색' })
-  @Get('ft-category')
+  @Get('42category')
   get42Category(@JwtPayload() account: Account) {
-    // cookie에 있는 인트라 토큰 받도록 구현 필요
-    // 42 inner 과제 목록과 현재 42서울 사용자가 등록한 과제 목록 가져오기
-    // 끝낸 과제와 등록하지 않은 과제는 후순위로 될 수 있도록 내림
-    // 1. 등록한 과제 2. 등록 가능한 과제 3. 끝낸 과제 4. 등록할 수 없는 과제
+    return this.todoService.get42Category(account.uid);
+  }
+
+  @ApiOperation({ summary: '42 카테고리 추가' })
+  @Post('42category')
+  create42Category(
+    @JwtPayload() account: Account,
+    @Body() createFtCategoryDto: CreateFtCategoryDto,
+  ) {
+    return this.todoService.create42Category(account.uid, createFtCategoryDto);
+  }
+
+  @ApiOperation({ summary: '42 카테고리 공유 여부 수정' })
+  @Patch('42category/:id/is-share')
+  update42CategoryIsShare(
+    @Param('id') ftCategoryId: number,
+    @Body('isShare') isShare: boolean,
+  ) {
+    return this.todoService.update42CategoryIsShare(ftCategoryId, isShare);
   }
 
   @ApiOperation({ summary: '42 카테고리 삭제' })
-  @Delete('ft-category/:id')
-  delete42Category() {}
+  @Delete('42category/:id')
+  delete42Category(@Param('id') ftCategoryId: number) {
+    return this.todoService.delete42Category(ftCategoryId);
+  }
 
   @ApiOperation({ summary: '전체 task 검색' })
   @Get('task')
   getTask(@JwtPayload() account: Account) {
     return this.todoService.getTask(account.uid);
-  }
-
-  @ApiOperation({ summary: '월별 전체 task 검색' })
-  getMonthlyTask(
-    @JwtPayload() account: Account,
-    @Query('month') month: number,
-  ) {
-    return this.todoService.getMonthlyTask(account.uid, month);
   }
 
   @ApiOperation({ summary: 'task 추가' })
@@ -108,12 +124,21 @@ export class TodoController {
   }
 
   @ApiOperation({ summary: 'task 수정' })
-  @Patch('task/:id')
-  updateTask(
+  @Patch('task/:id/content')
+  updateTaskContent(
     @Param('id') taskId: number,
-    @Body() updateTaskDto: UpdateTaskDto,
+    @Body('newContent') newContent: string,
   ) {
-    return this.todoService.updateTask(taskId, updateTaskDto);
+    return this.todoService.updateTaskContent(taskId, newContent);
+  }
+
+  @ApiOperation({ summary: 'task 완료 여부 수정' })
+  @Patch('task/:id/is-done')
+  updateTaskIsDone(
+    @Param('id') taskId: number,
+    @Body('isDone') isDone: boolean,
+  ) {
+    return this.todoService.updateTaskIsDone(taskId, isDone);
   }
 
   @ApiOperation({ summary: 'task 삭제' })
@@ -123,18 +148,41 @@ export class TodoController {
   }
 
   @ApiOperation({ summary: '42 task 검색' })
-  @Get('ft-task')
-  getFtTask(@JwtPayload() account: Account) {}
+  @Get('42task')
+  get42Task(@JwtPayload() account: Account) {
+    return this.todoService.get42Task(account.uid);
+  }
 
   @ApiOperation({ summary: '42 task 생성' })
-  @Post('ft-task')
-  createFtTask(@JwtPayload() account: Account) {}
+  @Post('42task')
+  create42Task(
+    @JwtPayload() account: Account,
+    @Body() createTaskDto: CreateTaskDto,
+  ) {
+    return this.todoService.create42Task(account.uid, createTaskDto);
+  }
 
   @ApiOperation({ summary: '42 task 수정' })
-  @Patch('ft-task/:id')
-  updateFtTask(@JwtPayload() account: Account) {}
+  @Patch('42task/:id/content')
+  update42Task(
+    @Param('id') taskId: number,
+    @Body('newContent') newContent: string,
+  ) {
+    return this.todoService.update42TaskContent(taskId, newContent);
+  }
+
+  @ApiOperation({ summary: '42 task 완료 여부 수정' })
+  @Patch('42task/:id/is-done')
+  update42TaskIsDone(
+    @Param('id') taskId: number,
+    @Body('isDone') isDone: boolean,
+  ) {
+    return this.todoService.update42TaskIsDone(taskId, isDone);
+  }
 
   @ApiOperation({ summary: '42 task 삭제' })
-  @Delete('ft-task/:id')
-  deleteFtTask(@JwtPayload() account: Account) {}
+  @Delete('42task/:id')
+  delete42Task(@Param('id') taskId: number) {
+    return this.todoService.delete42Task(taskId);
+  }
 }

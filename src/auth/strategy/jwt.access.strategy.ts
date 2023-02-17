@@ -2,7 +2,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Account } from '../entities/auth.entity';
+import { Account } from '../entities/account.entity';
 
 @Injectable()
 export class AccessTokenStrategy extends PassportStrategy(

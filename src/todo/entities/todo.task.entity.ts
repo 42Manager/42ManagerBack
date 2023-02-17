@@ -8,39 +8,51 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Category } from './todo.category.entity';
-import { Account } from './todo.account.entity';
+import { Account } from 'src/auth/entities/account.entity';
 
 @Entity({ name: 'task' })
 export class Task {
-  @PrimaryGeneratedColumn({ name: 'id' })
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
   @ManyToOne(() => Category)
-  @JoinColumn({ name: 'categoryId' })
+  @JoinColumn({ name: 'category_id', referencedColumnName: 'id' })
   category: Category;
 
   @Column({ name: 'category_id' })
   categoryId: number;
 
   @ManyToOne(() => Account)
-  @JoinColumn({ name: 'uid' })
+  @JoinColumn({ name: 'uid', referencedColumnName: 'uid' })
   uid: string;
 
-  @Column({ name: 'content' })
+  @Column({ name: 'content', type: 'text' })
   content: string;
 
-  @Column({ name: 'is_done', default: false })
+  @Column({ name: 'is_done', default: false, type: 'boolean' })
   isDone: boolean;
 
-  @Column({ name: 'start_at' })
-  startAt: Date;
+  @Column({ name: 'started_at', type: 'timestamp without time zone' })
+  startedAt: Date;
 
-  @Column({ name: 'finish_at', nullable: true })
-  finishAt: Date;
+  @Column({
+    name: 'finished_at',
+    nullable: true,
+    type: 'timestamp without time zone',
+  })
+  finishedAt: Date;
 
-  @CreateDateColumn({ name: 'created_at' })
+  @CreateDateColumn({
+    name: 'created_at',
+    default: () => 'now()',
+    type: 'timestamp without time zone',
+  })
   createdAt: Date;
 
-  @UpdateDateColumn({ name: 'updated_at', nullable: true })
+  @UpdateDateColumn({
+    name: 'updated_at',
+    nullable: true,
+    type: 'timestamp without time zone',
+  })
   updatedAt: Date;
 }

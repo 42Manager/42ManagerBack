@@ -3,7 +3,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Repository } from 'typeorm';
-import { Account } from './entities/auth.entity';
+import { Account } from './entities/account.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
@@ -79,9 +79,8 @@ export class AuthService {
       );
 
       intraInfo = {
-        id: intraInfoResult.data.id,
         intraId: intraInfoResult.data.login,
-        photoUrl: intraInfoResult.data.image.link,
+        imageUrl: intraInfoResult.data.image.link,
       };
     } catch (err) {
       console.log('42 사용자 정보 확인 실패');
@@ -96,6 +95,7 @@ export class AuthService {
       if (user === null) {
         const insertedData = await this.accountRepository.save({
           intraId: intraInfo.intraId,
+          imageUrl: intraInfo.imageUrl,
         });
         uid = insertedData.uid;
       } else {
@@ -140,6 +140,7 @@ export class AuthService {
       accessToken: accessToken,
       refreshToken: refreshToken,
       ftAccessToken: ftAccessToken,
+      imageUrl: intraInfo.imageUrl,
     };
   }
 }

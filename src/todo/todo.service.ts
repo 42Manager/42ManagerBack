@@ -429,7 +429,7 @@ export class TodoService {
         order: { categoryId: 'asc', startedAt: 'desc', id: 'asc' },
       });
 
-      getResult.forEach((value, i) => {
+      getResult.forEach((value) => {
         if (data[value.categoryId] === undefined) {
           data[value.categoryId] = [];
         }
@@ -507,7 +507,7 @@ export class TodoService {
 
     return {
       status: true,
-      newContent: newContent,
+      content: newContent,
     };
   }
 
@@ -517,14 +517,15 @@ export class TodoService {
     if (isDone) {
       finishedAt = new Date();
     }
+
     try {
       const updateResult = await this.taskRepository.update(
         {
           id: taskId,
         },
         {
-          isDone: isDone,
-          finishedAt: finishedAt,
+          isDone,
+          finishedAt,
         },
       );
 
@@ -538,9 +539,14 @@ export class TodoService {
       throw new InternalServerErrorException(err);
     }
 
+    if (finishedAt) {
+      finishedAt = format(finishedAt, 'yyyy-MM-dd HH:mm:ss');
+    }
+
     return {
       status: true,
-      isDone: isDone,
+      isDone,
+      finishedAt,
     };
   }
 

@@ -17,6 +17,9 @@ export class FtTask {
 
   @ManyToOne(() => FtCategory)
   @JoinColumn({ name: 'ft_category_id', referencedColumnName: 'id' })
+  ftCategory: FtCategory;
+
+  @Column({ name: 'ft_category_id' })
   ftCategoryId: number;
 
   @ManyToOne(() => Account)

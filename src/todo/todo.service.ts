@@ -558,8 +558,152 @@ export class TodoService {
     };
   }
 
-  getFtTask(uid: string) {}
-  createFtTask(uid: string, categoryId: number, createTaskDto: CreateTaskDto) {}
-  updateFtTask(uid: string, categoryId: number, updateTaskDto: UpdateTaskDto) {}
-  deleteFtTask(uid: string, categoryId: number) {}
+  async get42Task(uid: string) {
+    const data = {};
+
+    try {
+      const getResult = await this.ftTaskRepository.find({
+        where: { uid },
+        order: { ftCategoryId: 'asc', startedAt: 'desc', id: 'asc' },
+      });
+
+      getResult.forEach((value) => {
+        if (data[value.ftCategoryId] === undefined) {
+          data[value.ftCategoryId] = [];
+        }
+        data[value.ftCategoryId].push(new ResponseTaskDto());
+        const item =
+          data[value.ftCategoryId][data[value.ftCategoryId].length - 1];
+        item.id = value.id;
+        item.categoryId = value.ftCategoryId;
+        item.content = value.content;
+        item.isDone = value.isDone;
+        item.startedAt = format(value.startedAt, 'yyyy-MM-dd HH:mm:ss');
+        item.finishedAt =
+          value.isDone === true
+            ? format(value.finishedAt, 'yyyy-MM-dd HH:mm:ss')
+            : null;
+        item.createdAt = format(value.createdAt, 'yyyy-MM-dd HH:mm:ss');
+      });
+    } catch (err) {
+      console.log(err);
+      throw new InternalServerErrorException(err);
+    }
+
+    return {
+      status: true,
+      data,
+    };
+  }
+
+  async create42Task(uid: string, createTaskDto: CreateTaskDto) {
+    const data = {
+      id: 0,
+      createdAt: '',
+    };
+
+    try {
+      const createResult = await this.ftTaskRepository.save({
+        uid,
+        ftCategoryId: createTaskDto.categoryId,
+        content: createTaskDto.content,
+        startedAt: createTaskDto.startedAt,
+      });
+
+      data.id = createResult.id;
+      data.createdAt = format(createResult.createdAt, 'yyyy-MM-dd HH:mm:ss');
+    } catch (err) {
+      throw new InternalServerErrorException(err);
+    }
+
+    return {
+      status: true,
+      data,
+    };
+  }
+
+  async update42TaskContent(taskId: number, newContent: string) {
+    try {
+      const updateResult = await this.ftTaskRepository.update(
+        {
+          id: taskId,
+        },
+        {
+          content: newContent,
+        },
+      );
+
+      if (updateResult.affected === 0) {
+        console.log('42 task 수정 실패');
+        throw new BadRequestException(
+          'successful execution but nothing update',
+        );
+      }
+    } catch (err) {
+      throw new InternalServerErrorException(err);
+    }
+
+    return {
+      status: true,
+      content: newContent,
+    };
+  }
+
+  async update42TaskIsDone(taskId: number, isDone: boolean) {
+    let finishedAt = null;
+
+    if (isDone) {
+      finishedAt = new Date();
+    }
+
+    try {
+      const updateResult = await this.ftTaskRepository.update(
+        {
+          id: taskId,
+        },
+        {
+          isDone,
+          finishedAt,
+        },
+      );
+
+      if (updateResult.affected === 0) {
+        console.log('42 task 수정 실패');
+        throw new BadRequestException(
+          'successful execution but nothing update',
+        );
+      }
+    } catch (err) {
+      throw new InternalServerErrorException(err);
+    }
+
+    if (finishedAt) {
+      finishedAt = format(finishedAt, 'yyyy-MM-dd HH:mm:ss');
+    }
+
+    return {
+      status: true,
+      isDone,
+      finishedAt,
+    };
+  }
+
+  async delete42Task(taskId: number) {
+    try {
+      const deleteResult = await this.ftTaskRepository.delete({
+        id: taskId,
+      });
+
+      if (deleteResult.affected === 0) {
+        console.log('존재하지 않는 작업 삭제 시도');
+        throw new BadRequestException('not exist 42 task');
+      }
+    } catch (err) {
+      throw new InternalServerErrorException(err);
+    }
+
+    return {
+      status: true,
+    };
+  }
 }

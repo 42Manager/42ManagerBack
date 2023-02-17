@@ -6,7 +6,6 @@ import {
   Param,
   Patch,
   Post,
-  Query,
   UseGuards,
 } from '@nestjs/common';
 import { TodoService } from './todo.service';
@@ -150,17 +149,40 @@ export class TodoController {
 
   @ApiOperation({ summary: '42 task 검색' })
   @Get('42task')
-  getFtTask(@JwtPayload() account: Account) {}
+  get42Task(@JwtPayload() account: Account) {
+    return this.todoService.get42Task(account.uid);
+  }
 
   @ApiOperation({ summary: '42 task 생성' })
   @Post('42task')
-  createFtTask(@JwtPayload() account: Account) {}
+  create42Task(
+    @JwtPayload() account: Account,
+    @Body() createTaskDto: CreateTaskDto,
+  ) {
+    return this.todoService.create42Task(account.uid, createTaskDto);
+  }
 
   @ApiOperation({ summary: '42 task 수정' })
-  @Patch('42task/:id')
-  updateFtTask(@JwtPayload() account: Account) {}
+  @Patch('42task/:id/content')
+  update42Task(
+    @Param('id') taskId: number,
+    @Body('newContent') newContent: string,
+  ) {
+    return this.todoService.update42TaskContent(taskId, newContent);
+  }
+
+  @ApiOperation({ summary: '42 task 완료 여부 수정' })
+  @Patch('42task/:id/is-done')
+  update42TaskIsDone(
+    @Param('id') taskId: number,
+    @Body('isDone') isDone: boolean,
+  ) {
+    return this.todoService.update42TaskIsDone(taskId, isDone);
+  }
 
   @ApiOperation({ summary: '42 task 삭제' })
   @Delete('42task/:id')
-  deleteFtTask(@JwtPayload() account: Account) {}
+  delete42Task(@Param('id') taskId: number) {
+    return this.todoService.delete42Task(taskId);
+  }
 }

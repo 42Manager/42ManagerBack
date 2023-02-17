@@ -20,6 +20,7 @@ import { ResponesCategoryDto } from './dto/response-category.dto';
 import { ResponseTaskDto } from './dto/response-task.dto';
 import { HttpService } from '@nestjs/axios';
 import { FtCategoryKind } from './entities/todo.ft_category_kind.entity';
+import { CreateFtCategoryDto } from './dto/create-ft-category.dto';
 
 @Injectable()
 export class TodoService {

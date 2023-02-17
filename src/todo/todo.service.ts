@@ -301,26 +301,30 @@ export class TodoService {
   }
 
   async getTask(uid: string) {
-    const data: ResponseTaskDto[] = [];
+    const data = {};
 
     try {
       const getResult = await this.taskRepository.find({
         where: { uid },
-        order: { startedAt: 'desc', id: 'asc' },
+        order: { categoryId: 'asc', startedAt: 'desc', id: 'asc' },
       });
 
       getResult.forEach((value, i) => {
-        data.push(new ResponseTaskDto());
-        data[i].id = value.id;
-        data[i].categoryId = value.categoryId;
-        data[i].content = value.content;
-        data[i].isDone = value.isDone;
-        data[i].startAt = format(value.startAt, 'yyyy-MM-dd HH:mm:ss');
-        data[i].finishAt =
+        if (data[value.categoryId] === undefined) {
+          data[value.categoryId] = [];
+        }
+        data[value.categoryId].push(new ResponseTaskDto());
+        const item = data[value.categoryId][data[value.categoryId].length - 1];
+        item.id = value.id;
+        item.categoryId = value.categoryId;
+        item.content = value.content;
+        item.isDone = value.isDone;
+        item.startedAt = format(value.startedAt, 'yyyy-MM-dd HH:mm:ss');
+        item.finishedAt =
           value.isDone === true
             ? format(value.finishedAt, 'yyyy-MM-dd HH:mm:ss')
             : null;
-        data[i].createdAt = format(value.createdAt, 'yyyy-MM-dd HH:mm:ss');
+        item.createdAt = format(value.createdAt, 'yyyy-MM-dd HH:mm:ss');
       });
     } catch (err) {
       console.log('task 검색 실패');
@@ -360,19 +364,19 @@ export class TodoService {
     };
   }
 
-  async updateTask(taskId: number, updateTaskDto: UpdateTaskDto) {
+  async updateTaskContent(taskId: number, newContent: string) {
     try {
       const updateResult = await this.taskRepository.update(
         {
           id: taskId,
         },
         {
-          content: updateTaskDto.newContent,
+          content: newContent,
         },
       );
 
       if (updateResult.affected === 0) {
-        console.log('task 수정 실패');
+        console.log('task 내용 수정 실패');
         throw new BadRequestException(
           'successful execution but nothing update',
         );
@@ -383,7 +387,8 @@ export class TodoService {
 
     return {
       status: true,
-      newContent: updateTaskDto.newContent,
+      newContent: newContent,
+    };
   }
 
   async updateTaskIsDone(taskId: number, isDone: boolean) {
@@ -424,8 +429,8 @@ export class TodoService {
       const deleteResult = await this.taskRepository.delete({ id: taskId });
 
       if (deleteResult.affected === 0) {
-        console.log('존재하지 않는 카테고리 삭제 시도');
-        throw new BadRequestException('not exist category');
+        console.log('존재하지 않는 작업 삭제 시도');
+        throw new BadRequestException('not exist task');
       }
     } catch (err) {
       throw new InternalServerErrorException(err);

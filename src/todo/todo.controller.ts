@@ -108,12 +108,12 @@ export class TodoController {
   }
 
   @ApiOperation({ summary: 'task 수정' })
-  @Patch('task/:id')
-  updateTask(
+  @Patch('task/:id/content')
+  updateTaskContent(
     @Param('id') taskId: number,
-    @Body() updateTaskDto: UpdateTaskDto,
+    @Body('newContent') newContent: string,
   ) {
-    return this.todoService.updateTask(taskId, updateTaskDto);
+    return this.todoService.updateTaskContent(taskId, newContent);
   }
 
   @ApiOperation({ summary: 'task 완료 여부 수정' })

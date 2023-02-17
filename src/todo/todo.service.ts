@@ -10,7 +10,6 @@ import { Category } from './entities/todo.category.entity';
 import { Task } from './entities/todo.task.entity';
 import { FtCategory } from './entities/todo.ft_category.entity';
 import { FtTask } from './entities/todo.ft_task.entity';
-import { Account } from 'src/auth/entities/account.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { CreateTaskDto } from './dto/create-task.dto';
@@ -25,7 +24,6 @@ import { CreateFtCategoryDto } from './dto/create-ft-category.dto';
 @Injectable()
 export class TodoService {
   constructor(
-    @InjectRepository(Account) private accountRepository: Repository<Account>,
     @InjectRepository(Category)
     private categoryRepository: Repository<Category>,
     @InjectRepository(Task)

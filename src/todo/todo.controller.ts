@@ -19,6 +19,7 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { Cookies } from 'src/decorator/cookie-jwt.decorator';
+import { CreateFtCategoryDto } from './dto/create-ft-category.dto';
 
 @ApiTags('Todo')
 @ApiBearerAuth()

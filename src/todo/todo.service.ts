@@ -43,6 +43,8 @@ export class TodoService {
     const data = {
       category: [],
       task: {},
+      ftCategory: [],
+      ftTask: {},
     };
 
     try {

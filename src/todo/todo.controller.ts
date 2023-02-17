@@ -74,28 +74,44 @@ export class TodoController {
 
   @ApiOperation({ summary: '42 카테고리 선택 목록 검색' })
   @Get('42category-kind')
-  async get42CategoryKind(@Cookies('ftAccessToken') ftAccessToken: string) {
-    return await this.todoService.get42CategoryKind(ftAccessToken);
+  get42CategoryKind(@Cookies('ftAccessToken') ftAccessToken: string) {
+    return this.todoService.get42CategoryKind(ftAccessToken);
   }
 
   @ApiOperation({ summary: '42 카테고리 검색' })
   @Get('42category')
   get42Category(@JwtPayload() account: Account) {
-    // cookie에 있는 인트라 토큰 받도록 구현 필요
-    // 42 inner 과제 목록과 현재 42서울 사용자가 등록한 과제 목록 가져오기
-    // 끝낸 과제와 등록하지 않은 과제는 후순위로 될 수 있도록 내림
-    // 1. 등록한 과제 2. 등록 가능한 과제 3. 끝낸 과제 4. 등록할 수 없는 과제
+    return this.todoService.get42Category(account.uid);
+  }
+
+  @ApiOperation({ summary: '42 카테고리 추가' })
+  @Post('42category')
+  create42Category(
+    @JwtPayload() account: Account,
+    @Body() createFtCategoryDto: CreateFtCategoryDto,
+  ) {
+    return this.todoService.create42Category(account.uid, createFtCategoryDto);
+  }
+
+  @ApiOperation({ summary: '42 카테고리 공유 여부 수정' })
+  @Patch('42category/:id/is-share')
+  update42CategoryIsShare(
+    @Param('id') ftCategoryId: number,
+    @Body('isShare') isShare: boolean,
+  ) {
+    return this.todoService.update42CategoryIsShare(ftCategoryId, isShare);
   }
 
   @ApiOperation({ summary: '42 카테고리 삭제' })
   @Delete('42category/:id')
-  delete42Category() {}
+  delete42Category(@Param('id') ftCategoryId: number) {
+    return this.todoService.delete42Category(ftCategoryId);
+  }
 
   @ApiOperation({ summary: '전체 task 검색' })
   @Get('task')
   getTask(@JwtPayload() account: Account) {
     return this.todoService.getTask(account.uid);
-  }
   }
 
   @ApiOperation({ summary: 'task 추가' })

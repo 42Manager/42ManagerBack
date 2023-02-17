@@ -14,10 +14,10 @@ export class ResponseTaskDto {
   isDone: boolean;
 
   @ApiProperty({ description: '시작일시' })
-  startAt: string;
+  startedAt: string;
 
   @ApiProperty({ description: '완료일시' })
-  finishAt: string | boolean;
+  finishedAt: string | boolean;
 
   @ApiProperty({ description: '생성일시' })
   createdAt: string;

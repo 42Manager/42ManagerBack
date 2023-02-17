@@ -52,17 +52,17 @@ export class TodoService {
 
       const getTaskResult = await this.taskRepository.find({
         where: { uid },
-        order: { startAt: 'desc', createdAt: 'asc' },
+        order: { startedAt: 'desc', createdAt: 'asc' },
       });
 
       getCategoryResult.forEach((value) => {
         data['category'].push(value);
       });
       getTaskResult.forEach((value) => {
-        if (data['task'][format(value.startAt, 'yyyy-MM-dd')] == null) {
-          data['task'][format(value.startAt, 'yyyy-MM-dd')] = [];
+        if (data['task'][format(value.startedAt, 'yyyy-MM-dd')] == null) {
+          data['task'][format(value.startedAt, 'yyyy-MM-dd')] = [];
         }
-        data['task'][format(value.startAt, 'yyyy-MM-dd')].push(value);
+        data['task'][format(value.startedAt, 'yyyy-MM-dd')].push(value);
       });
     } catch (err) {
       console.log('전체 Todo 목록 검색 실패');
@@ -304,7 +304,7 @@ export class TodoService {
     try {
       const getResult = await this.taskRepository.find({
         where: { uid },
-        order: { startAt: 'desc', id: 'asc' },
+        order: { startedAt: 'desc', id: 'asc' },
       });
 
       getResult.forEach((value, i) => {
@@ -316,7 +316,7 @@ export class TodoService {
         data[i].startAt = format(value.startAt, 'yyyy-MM-dd HH:mm:ss');
         data[i].finishAt =
           value.isDone === true
-            ? format(value.finishAt, 'yyyy-MM-dd HH:mm:ss')
+            ? format(value.finishedAt, 'yyyy-MM-dd HH:mm:ss')
             : null;
         data[i].createdAt = format(value.createdAt, 'yyyy-MM-dd HH:mm:ss');
       });
@@ -340,9 +340,9 @@ export class TodoService {
     try {
       const createResult = await this.taskRepository.save({
         uid,
-        category_id: createTaskDto.categoryId,
+        categoryId: createTaskDto.categoryId,
         content: createTaskDto.content,
-        startAt: new Date(createTaskDto.startAt),
+        startedAt: new Date(createTaskDto.startedAt),
       });
 
       data.id = createResult.id;

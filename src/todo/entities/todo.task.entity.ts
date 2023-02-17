@@ -33,14 +33,14 @@ export class Task {
   isDone: boolean;
 
   @Column({ name: 'started_at', type: 'timestamp without time zone' })
-  startAt: Date;
+  startedAt: Date;
 
   @Column({
     name: 'finished_at',
     nullable: true,
     type: 'timestamp without time zone',
   })
-  finishAt: Date;
+  finishedAt: Date;
 
   @CreateDateColumn({
     name: 'created_at',

@@ -8,5 +8,5 @@ export class CreateTaskDto {
   content: string;
 
   @ApiProperty({ example: '2023-02-10' })
-  startAt: string;
+  startedAt: string;
 }

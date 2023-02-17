@@ -17,7 +17,7 @@ export class FtTask {
 
   @ManyToOne(() => FtCategory)
   @JoinColumn({ name: 'ft_category_id', referencedColumnName: 'id' })
-  ft_category_id: number;
+  ftCategoryId: number;
 
   @ManyToOne(() => Account)
   @JoinColumn({ name: 'uid', referencedColumnName: 'uid' })
@@ -27,29 +27,29 @@ export class FtTask {
   content: string;
 
   @Column({ name: 'is_done', default: false, type: 'boolean' })
-  is_done: boolean;
+  isDone: boolean;
 
   @Column({ name: 'started_at', type: 'timestamp without time zone' })
-  start_at: Date;
+  startedAt: Date;
 
   @Column({
     name: 'finished_at',
     nullable: true,
     type: 'timestamp without time zone',
   })
-  finish_at: Date;
+  finishedAt: Date;
 
   @CreateDateColumn({
     name: 'created_at',
     default: () => 'now()',
     type: 'timestamp without time zone',
   })
-  created_at: Date;
+  createdAt: Date;
 
   @UpdateDateColumn({
     name: 'updated_at',
     nullable: true,
     type: 'timestamp without time zone',
   })
-  updated_at: Date;
+  updatedAt: Date;
 }

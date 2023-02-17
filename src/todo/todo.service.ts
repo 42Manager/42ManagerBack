@@ -146,6 +146,7 @@ export class TodoService {
         },
         {
           name: updateCategoryDto.newName,
+          color: updateCategoryDto.newColor,
         },
       );
 
@@ -164,6 +165,7 @@ export class TodoService {
       status: true,
       data: {
         name: updateCategoryDto.newName,
+        color: updateCategoryDto.newColor,
       },
     };
   }

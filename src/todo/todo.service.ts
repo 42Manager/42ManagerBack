@@ -331,8 +331,6 @@ export class TodoService {
     };
   }
 
-  getMonthlyTask(uid: string, month: number) {}
-
   async createTask(uid: string, createTaskDto: CreateTaskDto) {
     const data = {
       id: 0,

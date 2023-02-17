@@ -96,13 +96,6 @@ export class TodoController {
   getTask(@JwtPayload() account: Account) {
     return this.todoService.getTask(account.uid);
   }
-
-  @ApiOperation({ summary: '월별 전체 task 검색' })
-  getMonthlyTask(
-    @JwtPayload() account: Account,
-    @Query('month') month: number,
-  ) {
-    return this.todoService.getMonthlyTask(account.uid, month);
   }
 
   @ApiOperation({ summary: 'task 추가' })

@@ -382,6 +382,38 @@ export class TodoService {
     return {
       status: true,
       newContent: updateTaskDto.newContent,
+  }
+
+  async updateTaskIsDone(taskId: number, isDone: boolean) {
+    let finishedAt = null;
+
+    if (isDone) {
+      finishedAt = new Date();
+    }
+    try {
+      const updateResult = await this.taskRepository.update(
+        {
+          id: taskId,
+        },
+        {
+          isDone: isDone,
+          finishedAt: finishedAt,
+        },
+      );
+
+      if (updateResult.affected === 0) {
+        console.log('task 완료 여부 수정 실패');
+        throw new BadRequestException(
+          'successful execution but nothing update',
+        );
+      }
+    } catch (err) {
+      throw new InternalServerErrorException(err);
+    }
+
+    return {
+      status: true,
+      isDone: isDone,
     };
   }
 

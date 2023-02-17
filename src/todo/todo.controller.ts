@@ -116,6 +116,15 @@ export class TodoController {
     return this.todoService.updateTask(taskId, updateTaskDto);
   }
 
+  @ApiOperation({ summary: 'task 완료 여부 수정' })
+  @Patch('task/:id/is-done')
+  updateTaskIsDone(
+    @Param('id') taskId: number,
+    @Body('isDone') isDone: boolean,
+  ) {
+    return this.todoService.updateTaskIsDone(taskId, isDone);
+  }
+
   @ApiOperation({ summary: 'task 삭제' })
   @Delete('task/:id')
   deleteTask(@Param('id') taskId: number) {

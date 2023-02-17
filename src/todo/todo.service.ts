@@ -168,6 +168,33 @@ export class TodoService {
     };
   }
 
+  async updateCategoryIsShare(categoryId: number, isShare: boolean) {
+    try {
+      const updateResult = await this.categoryRepository.update(
+        {
+          id: categoryId,
+        },
+        {
+          isShare,
+        },
+      );
+
+      if (updateResult.affected === 0) {
+        console.log('변경된 것이 없음');
+        throw new BadRequestException(
+          'successful execution but nothing update',
+        );
+      }
+    } catch (err) {
+      throw new InternalServerErrorException(err);
+    }
+
+    return {
+      status: true,
+      isShare,
+    };
+  }
+
   async deleteCategory(categoryId: number) {
     try {
       const deleteResult = await this.categoryRepository.delete({

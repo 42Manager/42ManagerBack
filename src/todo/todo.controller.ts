@@ -57,6 +57,15 @@ export class TodoController {
     return this.todoService.updateCategory(categoryId, updateTodoDto);
   }
 
+  @ApiOperation({ summary: '카테고리 공유 여부 수정' })
+  @Patch('category/:id/is-share')
+  updateCategoryIsShare(
+    @Param('id') categoryId: number,
+    @Body('isShare') isShare: boolean,
+  ) {
+    return this.todoService.updateCategoryIsShare(categoryId, isShare);
+  }
+
   @ApiOperation({ summary: '카테고리 삭제' })
   @Delete('category/:id')
   deleteCategory(@Param('id') categoryId: number) {

@@ -38,8 +38,6 @@ export class TodoService {
     private readonly httpService: HttpService,
   ) {}
 
-  getMonthlyTodoCount(uid: string, month: number) {}
-
   async getAllTodo(uid: string) {
     const data = {
       category: [],

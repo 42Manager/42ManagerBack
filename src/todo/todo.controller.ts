@@ -27,15 +27,6 @@ import { Cookies } from 'src/decorator/cookie-jwt.decorator';
 export class TodoController {
   constructor(private readonly todoService: TodoService) {}
 
-  @ApiOperation({ summary: '월간 일별 task 개수 검색' })
-  @Get('count')
-  getMonthlyTodoCount(
-    @JwtPayload() account: Account,
-    @Query('month') month: number,
-  ) {
-    return this.todoService.getMonthlyTodoCount(account.uid, month);
-  }
-
   @ApiOperation({ summary: '전체 Todo 목록 검색' })
   @Get()
   getAllTodo(@JwtPayload() account: Account) {

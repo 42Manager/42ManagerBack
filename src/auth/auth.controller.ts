@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   HttpException,
   HttpStatus,
@@ -40,7 +41,7 @@ export class AuthController {
   @ApiCookieAuth()
   @Post('token')
   async login(
-    @Cookies('ftAccessToken') ftAccessToken: string,
+    @Body('ftAccessToken') ftAccessToken: string,
     @Res({ passthrough: true }) res: Response,
   ) {
     if (ftAccessToken === null) {

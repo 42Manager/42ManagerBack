@@ -82,8 +82,8 @@ export class FtOauthController {
     description:
       'cookie에 있는 42 refresh token으로 재발급<br>access token은 body, refresh token은 cookie에 발급',
   })
-  @ApiOkResponse({ description: '42 access token 재발급 성공' })
-  @ApiUnauthorizedResponse({ description: '42 access token 재발급 실패' })
+  @ApiOkResponse({ description: '42 token 재발급 성공' })
+  @ApiUnauthorizedResponse({ description: '42 token 재발급 실패' })
   @Patch('token')
   async reissue42token(
     @Cookies('ftRefreshToken') refreshToken: string,

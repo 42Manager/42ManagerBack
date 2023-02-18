@@ -30,7 +30,7 @@ export class FtOauthController {
   @ApiOperation({ summary: '42 code 발급 (리다이렉션)' })
   @ApiInternalServerErrorResponse({ description: 'code 발급 실패' })
   @Get('authorize')
-  async get42code(@Res({ passthrough: true }) res: Response) {
+  async issue42code(@Res({ passthrough: true }) res: Response) {
     try {
       res.redirect(
         `https://api.intra.42.fr/oauth/authorize?client_id=${this.config.get(
@@ -48,11 +48,11 @@ export class FtOauthController {
   @ApiOkResponse({ description: '42 access token 발급 성공' })
   @ApiUnauthorizedResponse({ description: '42 access token 발급 실패' })
   @Post('token')
-  async get42token(
+  async issue42token(
     @Query('code') code: string,
     @Res({ passthrough: true }) res: Response,
   ) {
-    const serviceResult = await this.ftOauthService.get42token(code);
+    const serviceResult = await this.ftOauthService.issue42token(code);
 
     res.cookie('ftRefreshToken', serviceResult.ftRefreshToken, {
       domain: process.env.FRONT_DOMAIN,
@@ -70,13 +70,11 @@ export class FtOauthController {
   @ApiOkResponse({ description: '42 access token 재발급 성공' })
   @ApiUnauthorizedResponse({ description: '42 access token 재발급 실패' })
   @Post('token/refresh-token')
-  async reissuance42token(
+  async reissue42token(
     @Cookies('ftRefreshToken') refreshToken: string,
     @Res({ passthrough: true }) res: Response,
   ) {
-    const serviceResult = await this.ftOauthService.reissuance42token(
-      refreshToken,
-    );
+    const serviceResult = await this.ftOauthService.reisse42token(refreshToken);
 
     res.cookie('ftRefreshToken', serviceResult.ftRefreshToken, {
       domain: process.env.FRONT_DOMAIN,

@@ -9,7 +9,7 @@ export class FtOauthService {
     private readonly config: ConfigService,
   ) {}
 
-  async get42token(code: string) {
+  async issue42token(code: string) {
     let ftAccessToken;
     let ftRefreshToken;
 
@@ -44,7 +44,7 @@ export class FtOauthService {
     };
   }
 
-  async reissuance42token(refreshToken: string) {
+  async reisse42token(refreshToken: string) {
     let ftAccessToken;
     let ftRefreshToken;
 

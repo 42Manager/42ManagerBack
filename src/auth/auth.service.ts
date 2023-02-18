@@ -62,9 +62,8 @@ export class AuthService {
     }
 
     return {
-      status: true,
-      accessToken: accessToken,
-      refreshToken: refreshToken,
+      accessToken,
+      refreshToken,
     };
   }
 
@@ -145,10 +144,9 @@ export class AuthService {
     }
 
     return {
-      status: true,
-      accessToken: accessToken,
-      refreshToken: refreshToken,
-      ftAccessToken: ftAccessToken,
+      accessToken,
+      refreshToken,
+      ftAccessToken,
       imageUrl: intraInfo.imageUrl,
     };
   }

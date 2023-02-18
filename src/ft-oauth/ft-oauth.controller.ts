@@ -56,7 +56,15 @@ export class FtOauthController {
     description:
       '인트라 로그인 창에서 자동으로 리다이렉션 되어 호출되는 API<br>access token은 body, refresh token은 cookie에 발급',
   })
-  @ApiOkResponse({ description: '42 token 발급 성공' })
+  @ApiOkResponse({
+    description: '42 token 발급 성공',
+    schema: {
+      type: 'object',
+      properties: {
+        ftAccessToken: { type: 'string' },
+      },
+    },
+  })
   @ApiUnauthorizedResponse({ description: '42 token 발급 실패' })
   @Post('token')
   async issue42token(
@@ -72,7 +80,6 @@ export class FtOauthController {
     });
 
     return {
-      status: true,
       ftAccessToken: serviceResult.ftAccessToken,
     };
   }
@@ -82,7 +89,15 @@ export class FtOauthController {
     description:
       'cookie에 있는 42 refresh token으로 재발급<br>access token은 body, refresh token은 cookie에 발급',
   })
-  @ApiOkResponse({ description: '42 token 재발급 성공' })
+  @ApiOkResponse({
+    description: '42 token 재발급 성공',
+    schema: {
+      type: 'object',
+      properties: {
+        ftAccessToken: { type: 'string' },
+      },
+    },
+  })
   @ApiUnauthorizedResponse({ description: '42 token 재발급 실패' })
   @Patch('token')
   async reissue42token(
@@ -98,7 +113,6 @@ export class FtOauthController {
     });
 
     return {
-      status: true,
       ftAccessToken: serviceResult.ftAccessToken,
     };
   }

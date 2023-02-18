@@ -38,7 +38,6 @@ export class FtOauthService {
     }
 
     return {
-      status: true,
       ftAccessToken,
       ftRefreshToken,
     };
@@ -72,7 +71,6 @@ export class FtOauthService {
     }
 
     return {
-      status: true,
       ftAccessToken,
       ftRefreshToken,
     };

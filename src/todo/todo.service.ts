@@ -13,7 +13,6 @@ import { FtTask } from './entities/todo.ft_task.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { CreateTaskDto } from './dto/create-task.dto';
-import { UpdateTaskDto } from './dto/update-task.dto';
 import { format } from 'date-fns-tz';
 import { ResponesCategoryDto } from './dto/response-category.dto';
 import { ResponseTaskDto } from './dto/response-task.dto';

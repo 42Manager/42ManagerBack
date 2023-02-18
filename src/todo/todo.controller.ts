@@ -16,7 +16,6 @@ import { Account } from 'src/auth/entities/account.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { CreateTaskDto } from './dto/create-task.dto';
-import { UpdateTaskDto } from './dto/update-task.dto';
 import { CreateFtCategoryDto } from './dto/create-ft-category.dto';
 
 @ApiTags('Todo')

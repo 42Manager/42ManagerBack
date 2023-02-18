@@ -39,7 +39,7 @@ export class AuthController {
   @ApiBadRequestResponse({ description: '올바르지 않은 매개변수 삽입' })
   @ApiInternalServerErrorResponse({ description: 'DB 에러 발생' })
   @ApiCookieAuth()
-  @Post('token')
+  @Post('token/42seoul')
   async login(
     @Body('ftAccessToken') ftAccessToken: string,
     @Res({ passthrough: true }) res: Response,

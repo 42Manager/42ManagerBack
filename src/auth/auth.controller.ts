@@ -60,7 +60,6 @@ export class AuthController {
     });
 
     return {
-      status: serviceResult.status,
       accessToken: serviceResult.accessToken,
       imageUrl: serviceResult.imageUrl,
     };
@@ -86,7 +85,6 @@ export class AuthController {
     });
 
     return {
-      status: serviceResult.status,
       accessToken: serviceResult.accessToken,
     };
   }

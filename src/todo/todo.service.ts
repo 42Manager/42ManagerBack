@@ -95,7 +95,6 @@ export class TodoService {
     }
 
     return {
-      status: true,
       data,
     };
   }
@@ -119,7 +118,6 @@ export class TodoService {
     }
 
     return {
-      status: true,
       data,
     };
   }
@@ -155,7 +153,6 @@ export class TodoService {
     }
 
     return {
-      status: true,
       data,
     };
   }
@@ -187,7 +184,6 @@ export class TodoService {
     }
 
     return {
-      status: true,
       data: {
         name: updateCategoryDto.newName,
         color: updateCategoryDto.newColor,
@@ -217,8 +213,7 @@ export class TodoService {
     }
 
     return {
-      status: true,
-      isShare,
+      data: { isShare },
     };
   }
 
@@ -238,7 +233,7 @@ export class TodoService {
     }
 
     return {
-      status: true,
+      data: {},
     };
   }
 
@@ -258,7 +253,6 @@ export class TodoService {
     }
 
     return {
-      status: true,
       data: ftCategory,
     };
   }
@@ -339,7 +333,6 @@ export class TodoService {
       });
 
     return {
-      status: true,
       data: intraInfo,
     };
   }
@@ -366,7 +359,6 @@ export class TodoService {
     }
 
     return {
-      status: true,
       data,
     };
   }
@@ -393,8 +385,7 @@ export class TodoService {
     }
 
     return {
-      status: true,
-      isShare,
+      data: { isShare },
     };
   }
 
@@ -413,7 +404,7 @@ export class TodoService {
     }
 
     return {
-      status: true,
+      data: {},
     };
   }
 
@@ -449,7 +440,6 @@ export class TodoService {
     }
 
     return {
-      status: true,
       data,
     };
   }
@@ -476,7 +466,6 @@ export class TodoService {
     }
 
     return {
-      status: true,
       data,
     };
   }
@@ -503,8 +492,7 @@ export class TodoService {
     }
 
     return {
-      status: true,
-      content: newContent,
+      data: { content: newContent },
     };
   }
 
@@ -541,9 +529,10 @@ export class TodoService {
     }
 
     return {
-      status: true,
-      isDone,
-      finishedAt,
+      data: {
+        isDone,
+        finishedAt,
+      },
     };
   }
 
@@ -560,7 +549,7 @@ export class TodoService {
     }
 
     return {
-      status: true,
+      data: {},
     };
   }
 
@@ -597,7 +586,6 @@ export class TodoService {
     }
 
     return {
-      status: true,
       data,
     };
   }
@@ -623,7 +611,6 @@ export class TodoService {
     }
 
     return {
-      status: true,
       data,
     };
   }
@@ -650,8 +637,7 @@ export class TodoService {
     }
 
     return {
-      status: true,
-      content: newContent,
+      data: { content: newContent },
     };
   }
 
@@ -688,9 +674,10 @@ export class TodoService {
     }
 
     return {
-      status: true,
-      isDone,
-      finishedAt,
+      data: {
+        isDone,
+        finishedAt,
+      },
     };
   }
 
@@ -709,7 +696,7 @@ export class TodoService {
     }
 
     return {
-      status: true,
+      data: {},
     };
   }
 }

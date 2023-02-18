@@ -1,5 +1,10 @@
 import { HttpService } from '@nestjs/axios';
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Repository } from 'typeorm';
@@ -126,10 +131,14 @@ export class AuthService {
     );
 
     try {
-      await this.accountRepository.save({
-        uid,
-        refresh_token: refreshToken,
-      });
+      const updatedResult = await this.accountRepository.update(
+        { uid },
+        { refreshToken },
+      );
+
+      if (updatedResult.affected === 0) {
+        throw new InternalServerErrorException('토큰 저장 실패');
+      }
     } catch (err) {
       console.log('refresh token 삽입 에러');
       throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR);

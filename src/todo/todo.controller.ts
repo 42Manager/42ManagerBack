@@ -16,6 +16,7 @@ import {
   ApiOkResponse,
   ApiOperation,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { JwtAccessTokenGuard } from 'src/auth/guard/jwt.auth.guard';
 import { JwtPayload } from 'src/decorator/jwt-payload.decorator';
@@ -275,7 +276,64 @@ export class TodoController {
     return this.todoService.deleteCategory(categoryId);
   }
 
-  @ApiOperation({ summary: '42 카테고리 선택 목록 검색' })
+  @ApiOperation({
+    summary: '42 카테고리 선택 목록 검색',
+    requestBody: {
+      content: {
+        'application/json': {
+          schema: {
+            type: 'object',
+            properties: {
+              ftAccessToken: {
+                type: 'string',
+              },
+            },
+          },
+        },
+      },
+    },
+  })
+  @ApiOkResponse({
+    description: '성공',
+    schema: {
+      type: 'object',
+      properties: {
+        data: {
+          type: 'object',
+          properties: {
+            inProgress: {
+              type: 'array',
+              items: {
+                properties: {
+                  categoryKindId: { type: 'number' },
+                  name: { type: 'string' },
+                },
+              },
+            },
+            finished: {
+              type: 'array',
+              items: {
+                properties: {
+                  categoryKindId: { type: 'number' },
+                  name: { type: 'string' },
+                },
+              },
+            },
+            forbidden: {
+              type: 'array',
+              items: {
+                properties: {
+                  categoryKindId: { type: 'number' },
+                  name: { type: 'string' },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  })
+  @ApiUnauthorizedResponse({ description: '유효하지 않은 42 token' })
   @Get('42category-kind')
   get42CategoryKind(@Body('ftAccessToken') ftAccessToken: string) {
     return this.todoService.get42CategoryKind(ftAccessToken);

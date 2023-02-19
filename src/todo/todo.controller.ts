@@ -9,7 +9,14 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { TodoService } from './todo.service';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiBearerAuth,
+  ApiInternalServerErrorResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { JwtAccessTokenGuard } from 'src/auth/guard/jwt.auth.guard';
 import { JwtPayload } from 'src/decorator/jwt-payload.decorator';
 import { Account } from 'src/auth/entities/account.entity';
@@ -25,19 +32,170 @@ import { CreateFtCategoryDto } from './dto/create-ft-category.dto';
 export class TodoController {
   constructor(private readonly todoService: TodoService) {}
 
-  @ApiOperation({ summary: '전체 Todo 목록 검색' })
+  @ApiOperation({
+    summary: '전체 Todo 목록 검색',
+    description: '요청한 사용자의 모든 카테고리와 작업 반환',
+  })
+  @ApiOkResponse({
+    description: '성공',
+    schema: {
+      type: 'object',
+      properties: {
+        data: {
+          type: 'object',
+          properties: {
+            category: {
+              type: 'array',
+              items: {
+                properties: {
+                  id: { type: 'number' },
+                  name: { type: 'string' },
+                  isShare: { type: 'boolean' },
+                  color: { type: 'string' },
+                  createdAt: { type: 'string', format: 'date-time' },
+                  updatedAt: {
+                    type: 'string',
+                    format: 'date-time',
+                    nullable: true,
+                  },
+                },
+              },
+            },
+            task: {
+              type: 'object',
+              properties: {
+                'yyyy-MM-dd': {
+                  type: 'array',
+                  items: {
+                    properties: {
+                      id: { type: 'number' },
+                      categoryId: { type: 'number' },
+                      content: { type: 'string' },
+                      isDone: { type: 'boolean' },
+                      startedAt: { type: 'string', format: 'date-time' },
+                      finishedAt: {
+                        type: 'string',
+                        format: 'date-time',
+                        nullable: true,
+                      },
+                      createdAt: { type: 'string', format: 'date-time' },
+                      updatedAt: {
+                        type: 'string',
+                        format: 'date-time',
+                        nullable: true,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+            ftCategory: {
+              type: 'array',
+              items: {
+                properties: {
+                  id: { type: 'number' },
+                  isShare: { type: 'boolean' },
+                  categoryKind: {
+                    type: 'object',
+                    properties: {
+                      name: { type: 'string' },
+                    },
+                  },
+                },
+              },
+            },
+            ftTask: {
+              type: 'object',
+              properties: {
+                'yyyy-MM-dd': {
+                  type: 'array',
+                  items: {
+                    properties: {
+                      id: { type: 'number' },
+                      ftCategoryId: { type: 'number' },
+                      content: { type: 'string' },
+                      isDone: { type: 'boolean' },
+                      startedAt: { type: 'string', format: 'date-time' },
+                      finishedAt: {
+                        type: 'string',
+                        format: 'date-time',
+                        nullable: true,
+                      },
+                      createdAt: { type: 'string', format: 'date-time' },
+                      updatedAt: {
+                        type: 'string',
+                        format: 'date-time',
+                        nullable: true,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  })
+  @ApiInternalServerErrorResponse({ description: '서버 에러 발생' })
   @Get()
   getAllTodo(@JwtPayload() account: Account) {
     return this.todoService.getAllTodo(account.uid);
   }
 
-  @ApiOperation({ summary: '카테고리 검색' })
+  @ApiOperation({
+    summary: '카테고리 검색',
+    description: '요청한 사용자의 일반 카테고리 반환',
+  })
+  @ApiOkResponse({
+    description: '성공',
+    schema: {
+      type: 'object',
+      properties: {
+        data: {
+          type: 'object',
+          properties: {
+            category: {
+              type: 'array',
+              items: {
+                properties: {
+                  id: { type: 'number' },
+                  name: { type: 'string' },
+                  color: { type: 'string' },
+                  isShare: { type: 'boolean' },
+                  createdAt: { type: 'string', format: 'date-time' },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  })
+  @ApiInternalServerErrorResponse({ description: '서버 에러 발생' })
   @Get('category')
   getCategory(@JwtPayload() account: Account) {
     return this.todoService.getCategory(account.uid);
   }
 
   @ApiOperation({ summary: '카테고리 생성' })
+  @ApiOkResponse({
+    description: '성공',
+    schema: {
+      type: 'object',
+      properties: {
+        data: {
+          type: 'object',
+          properties: {
+            id: { type: 'number' },
+            createdAt: { type: 'string', format: 'date-time' },
+          },
+        },
+      },
+    },
+  })
+  @ApiBadRequestResponse({ description: '이미 존재하는 카테고리명' })
+  @ApiInternalServerErrorResponse({ description: '서버 에러 발생' })
   @Post('category')
   createCategory(
     @JwtPayload() account: Account,
@@ -47,6 +205,23 @@ export class TodoController {
   }
 
   @ApiOperation({ summary: '카테고리 수정' })
+  @ApiOkResponse({
+    description: '성공',
+    schema: {
+      type: 'object',
+      properties: {
+        data: {
+          type: 'object',
+          properties: {
+            name: { type: 'string' },
+            color: { type: 'string' },
+          },
+        },
+      },
+    },
+  })
+  @ApiBadRequestResponse({ description: '변경된 것이 없음' })
+  @ApiInternalServerErrorResponse({ description: '서버 에러 발생' })
   @Patch('category/:id')
   updateCategory(
     @Param('id') categoryId: number,
@@ -56,6 +231,22 @@ export class TodoController {
   }
 
   @ApiOperation({ summary: '카테고리 공유 여부 수정' })
+  @ApiOkResponse({
+    description: '성공',
+    schema: {
+      type: 'object',
+      properties: {
+        data: {
+          type: 'object',
+          properties: {
+            isShare: { type: 'boolean' },
+          },
+        },
+      },
+    },
+  })
+  @ApiBadRequestResponse({ description: '변경된 것이 없음' })
+  @ApiInternalServerErrorResponse({ description: '서버 에러 발생' })
   @Patch('category/:id/is-share')
   updateCategoryIsShare(
     @Param('id') categoryId: number,
@@ -65,6 +256,20 @@ export class TodoController {
   }
 
   @ApiOperation({ summary: '카테고리 삭제' })
+  @ApiOkResponse({
+    description: '성공',
+    schema: {
+      type: 'object',
+      properties: {
+        data: {
+          type: 'object',
+          properties: {},
+        },
+      },
+    },
+  })
+  @ApiBadRequestResponse({ description: '삭제할 것이 없음' })
+  @ApiInternalServerErrorResponse({ description: '서버 에러 발생' })
   @Delete('category/:id')
   deleteCategory(@Param('id') categoryId: number) {
     return this.todoService.deleteCategory(categoryId);

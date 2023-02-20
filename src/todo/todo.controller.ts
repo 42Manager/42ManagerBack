@@ -435,12 +435,55 @@ export class TodoController {
   }
 
   @ApiOperation({ summary: 'task 검색' })
+  @ApiOkResponse({
+    description: '성공',
+    schema: {
+      type: 'object',
+      properties: {
+        data: {
+          type: 'object',
+          properties: {
+            categoryId: {
+              type: 'array',
+              items: {
+                properties: {
+                  id: { type: 'number' },
+                  content: { type: 'string' },
+                  isDone: { type: 'boolean' },
+                  startedAt: { type: 'string', format: 'date-time' },
+                  finishedAt: { type: 'string', format: 'date-time' },
+                  createdAt: { type: 'string', format: 'date-time' },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  })
+  @ApiInternalServerErrorResponse({ description: '서버 에러 발생' })
   @Get('task')
   getTask(@JwtPayload() account: Account) {
     return this.todoService.getTask(account.uid);
   }
 
   @ApiOperation({ summary: 'task 추가' })
+  @ApiOkResponse({
+    description: '성공',
+    schema: {
+      type: 'object',
+      properties: {
+        date: {
+          type: 'object',
+          properties: {
+            id: { type: 'number' },
+            createdAt: { type: 'string', format: 'date-time' },
+          },
+        },
+      },
+    },
+  })
+  @ApiInternalServerErrorResponse({ description: '서버 에러 발생' })
   @Post('task')
   createTask(
     @JwtPayload() account: Account,
@@ -449,7 +492,37 @@ export class TodoController {
     return this.todoService.createTask(account.uid, createTaskDto);
   }
 
-  @ApiOperation({ summary: 'task 수정' })
+  @ApiOperation({
+    summary: 'task 내용 수정',
+    requestBody: {
+      content: {
+        'application/json': {
+          schema: {
+            type: 'object',
+            properties: {
+              newContent: { type: 'string' },
+            },
+          },
+        },
+      },
+    },
+  })
+  @ApiOkResponse({
+    description: '성공',
+    schema: {
+      type: 'object',
+      properties: {
+        data: {
+          type: 'object',
+          properties: {
+            content: { type: 'string' },
+          },
+        },
+      },
+    },
+  })
+  @ApiBadRequestResponse({ description: '변경된 것이 없음' })
+  @ApiInternalServerErrorResponse({ description: '서버 에러 발생' })
   @Patch('task/:id/content')
   updateTaskContent(
     @Param('id') taskId: number,
@@ -458,7 +531,38 @@ export class TodoController {
     return this.todoService.updateTaskContent(taskId, newContent);
   }
 
-  @ApiOperation({ summary: 'task 완료 여부 수정' })
+  @ApiOperation({
+    summary: 'task 완료 여부 수정',
+    requestBody: {
+      content: {
+        'application/json': {
+          schema: {
+            type: 'object',
+            properties: {
+              isDone: { type: 'boolean' },
+            },
+          },
+        },
+      },
+    },
+  })
+  @ApiOkResponse({
+    description: '성공',
+    schema: {
+      type: 'object',
+      properties: {
+        data: {
+          type: 'object',
+          properties: {
+            isDone: { type: 'boolean' },
+            finishedAt: { type: 'string', format: 'date-time' },
+          },
+        },
+      },
+    },
+  })
+  @ApiBadRequestResponse({ description: '변경된 것이 없음' })
+  @ApiInternalServerErrorResponse({ description: '서버 에러 발생' })
   @Patch('task/:id/is-done')
   updateTaskIsDone(
     @Param('id') taskId: number,
@@ -468,18 +572,72 @@ export class TodoController {
   }
 
   @ApiOperation({ summary: 'task 삭제' })
+  @ApiOkResponse({
+    description: '성공',
+    schema: {
+      type: 'object',
+      properties: {
+        date: { type: 'object' },
+      },
+    },
+  })
+  @ApiBadRequestResponse({ description: '삭제될 것이 없음' })
+  @ApiInternalServerErrorResponse({ description: '서버 에러 발생' })
   @Delete('task/:id')
   deleteTask(@Param('id') taskId: number) {
     return this.todoService.deleteTask(taskId);
   }
 
   @ApiOperation({ summary: '42 task 검색' })
+  @ApiOkResponse({
+    description: '성공',
+    schema: {
+      type: 'object',
+      properties: {
+        data: {
+          type: 'object',
+          properties: {
+            categoryId: {
+              type: 'array',
+              items: {
+                properties: {
+                  id: { type: 'number' },
+                  content: { type: 'string' },
+                  isDone: { type: 'boolean' },
+                  startedAt: { type: 'string', format: 'date-time' },
+                  finishedAt: { type: 'string', format: 'date-time' },
+                  createdAt: { type: 'string', format: 'date-time' },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  })
+  @ApiInternalServerErrorResponse({ description: '서버 에러 발생' })
   @Get('42task')
   get42Task(@JwtPayload() account: Account) {
     return this.todoService.get42Task(account.uid);
   }
 
   @ApiOperation({ summary: '42 task 생성' })
+  @ApiOkResponse({
+    description: '성공',
+    schema: {
+      type: 'object',
+      properties: {
+        date: {
+          type: 'object',
+          properties: {
+            id: { type: 'number' },
+            createdAt: { type: 'string', format: 'date-time' },
+          },
+        },
+      },
+    },
+  })
+  @ApiInternalServerErrorResponse({ description: '서버 에러 발생' })
   @Post('42task')
   create42Task(
     @JwtPayload() account: Account,
@@ -488,7 +646,37 @@ export class TodoController {
     return this.todoService.create42Task(account.uid, createTaskDto);
   }
 
-  @ApiOperation({ summary: '42 task 수정' })
+  @ApiOperation({
+    summary: '42 task 내용 수정',
+    requestBody: {
+      content: {
+        'application/json': {
+          schema: {
+            type: 'object',
+            properties: {
+              newContent: { type: 'string' },
+            },
+          },
+        },
+      },
+    },
+  })
+  @ApiOkResponse({
+    description: '성공',
+    schema: {
+      type: 'object',
+      properties: {
+        data: {
+          type: 'object',
+          properties: {
+            content: { type: 'string' },
+          },
+        },
+      },
+    },
+  })
+  @ApiBadRequestResponse({ description: '변경된 것이 없음' })
+  @ApiInternalServerErrorResponse({ description: '서버 에러 발생' })
   @Patch('42task/:id/content')
   update42Task(
     @Param('id') taskId: number,
@@ -497,7 +685,38 @@ export class TodoController {
     return this.todoService.update42TaskContent(taskId, newContent);
   }
 
-  @ApiOperation({ summary: '42 task 완료 여부 수정' })
+  @ApiOperation({
+    summary: '42 task 완료 여부 수정',
+    requestBody: {
+      content: {
+        'application/json': {
+          schema: {
+            type: 'object',
+            properties: {
+              isDone: { type: 'boolean' },
+            },
+          },
+        },
+      },
+    },
+  })
+  @ApiOkResponse({
+    description: '성공',
+    schema: {
+      type: 'object',
+      properties: {
+        data: {
+          type: 'object',
+          properties: {
+            isDone: { type: 'boolean' },
+            finishedAt: { type: 'string', format: 'date-time' },
+          },
+        },
+      },
+    },
+  })
+  @ApiBadRequestResponse({ description: '변경된 것이 없음' })
+  @ApiInternalServerErrorResponse({ description: '서버 에러 발생' })
   @Patch('42task/:id/is-done')
   update42TaskIsDone(
     @Param('id') taskId: number,
@@ -507,6 +726,17 @@ export class TodoController {
   }
 
   @ApiOperation({ summary: '42 task 삭제' })
+  @ApiOkResponse({
+    description: '성공',
+    schema: {
+      type: 'object',
+      properties: {
+        date: { type: 'object' },
+      },
+    },
+  })
+  @ApiBadRequestResponse({ description: '삭제될 것이 없음' })
+  @ApiInternalServerErrorResponse({ description: '서버 에러 발생' })
   @Delete('42task/:id')
   delete42Task(@Param('id') taskId: number) {
     return this.todoService.delete42Task(taskId);

@@ -3,9 +3,17 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { Account } from './auth/entities/account.entity';
 import * as cookieParser from 'cookie-parser';
+import * as dotenv from 'dotenv';
+import * as fs from 'fs';
+import { LoggingInterceptor } from './interceptor/logger.interceptor';
+dotenv.config({ path: '../.env' });
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const httpsOptions = {
+    key: fs.readFileSync(process.env.SSL_KEY_LOCATION),
+    cert: fs.readFileSync(process.env.SSL_CERT_LOCATION),
+  };
+  const app = await NestFactory.create(AppModule, { httpsOptions });
 
   const config = new DocumentBuilder()
     .setTitle('42Manager')
@@ -25,14 +33,15 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config, {
     extraModels: [Account],
   });
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('doc', app, document);
 
+  app.useGlobalInterceptors(new LoggingInterceptor());
   app.use(cookieParser());
   app.enableCors({
     origin: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
   });
-  await app.listen(3000);
+  await app.listen(process.env.SERVER_PORT);
 }
 bootstrap();

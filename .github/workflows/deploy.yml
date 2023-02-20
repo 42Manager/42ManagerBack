@@ -1,23 +1,37 @@
-name: Deploy to EC2
+name: Deploy to server
 
 on:
   push:
-    branches:
-      - develop
+    branches: [ main, develop ]
+
+env:
+  NODE_ENV: production
+  PORT: 443
+  SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Setup SSH
-        uses: webfactory/ssh-agent@v0.4.1
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+    - name: Install dependencies
+      run: npm install
 
-      - name: Deploy code
-        run: |
-          ssh ubuntu@13.125.173.156	 'cd /home/ubuntu/42ManagerBack && git pull && npm install && pm2 kill && pm2 start dist/main.js -n 42manager'
+    - name: Build
+      run: npm run build
+
+    - name: Deploy with PM2
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SERVER_IP }}
+        username: ubuntu
+        key: ${{ env.SSH_PRIVATE_KEY }}
+        script: |
+          cd /home/ubuntu/42ManagerBack
+          git pull
+          npm build
+          pm2 kill
+          pm2 start dist/main.js --name=42manager

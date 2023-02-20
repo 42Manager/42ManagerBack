@@ -26,6 +26,4 @@ jobs:
         script: |
           cd /home/ubuntu/42ManagerBack
           git pull
-          npm run build
-          pm2 kill
-          pm2 start dist/main.js --name=42manager
+          npm run deploy

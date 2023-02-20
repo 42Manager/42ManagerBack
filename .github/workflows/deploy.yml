@@ -20,9 +20,6 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    - name: Build
-      run: npm run build
-
     - name: Deploy with PM2
       uses: appleboy/ssh-action@master
       with:
@@ -32,6 +29,6 @@ jobs:
         script: |
           cd /home/ubuntu/42ManagerBack
           git pull
-          npm build
+          npm run build
           pm2 kill
           pm2 start dist/main.js --name=42manager

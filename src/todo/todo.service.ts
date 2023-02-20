@@ -424,7 +424,6 @@ export class TodoService {
         data[value.categoryId].push(new ResponseTaskDto());
         const item = data[value.categoryId][data[value.categoryId].length - 1];
         item.id = value.id;
-        item.categoryId = value.categoryId;
         item.content = value.content;
         item.isDone = value.isDone;
         item.startedAt = format(value.startedAt, 'yyyy-MM-dd HH:mm:ss');
@@ -570,7 +569,6 @@ export class TodoService {
         const item =
           data[value.ftCategoryId][data[value.ftCategoryId].length - 1];
         item.id = value.id;
-        item.categoryId = value.ftCategoryId;
         item.content = value.content;
         item.isDone = value.isDone;
         item.startedAt = format(value.startedAt, 'yyyy-MM-dd HH:mm:ss');

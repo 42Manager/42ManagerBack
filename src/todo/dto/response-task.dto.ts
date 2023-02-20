@@ -4,9 +4,6 @@ export class ResponseTaskDto {
   @ApiProperty({ description: '아이디' })
   id: number;
 
-  @ApiProperty({ description: '카테고리 아이디' })
-  categoryId: number;
-
   @ApiProperty({ description: '내용' })
   content: string;
 

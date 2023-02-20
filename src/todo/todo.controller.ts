@@ -340,12 +340,52 @@ export class TodoController {
   }
 
   @ApiOperation({ summary: '42 카테고리 검색' })
+  @ApiOkResponse({
+    description: '성공',
+    schema: {
+      type: 'object',
+      properties: {
+        data: {
+          type: 'array',
+          items: {
+            properties: {
+              id: { type: 'number' },
+              isShare: { type: 'boolean' },
+              categoryKind: {
+                type: 'object',
+                properties: {
+                  name: { type: 'string' },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  })
+  @ApiInternalServerErrorResponse({ description: '서버 에러 발생' })
   @Get('42category')
   get42Category(@JwtPayload() account: Account) {
     return this.todoService.get42Category(account.uid);
   }
 
   @ApiOperation({ summary: '42 카테고리 추가' })
+  @ApiOkResponse({
+    description: '성공',
+    schema: {
+      type: 'object',
+      properties: {
+        data: {
+          type: 'object',
+          properties: {
+            id: { type: 'string' },
+            createdAt: { type: 'string', format: 'date-time' },
+          },
+        },
+      },
+    },
+  })
+  @ApiInternalServerErrorResponse({ description: '서버 에러 발생' })
   @Post('42category')
   create42Category(
     @JwtPayload() account: Account,
@@ -355,6 +395,22 @@ export class TodoController {
   }
 
   @ApiOperation({ summary: '42 카테고리 공유 여부 수정' })
+  @ApiOkResponse({
+    description: '성공',
+    schema: {
+      type: 'object',
+      properties: {
+        data: {
+          type: 'object',
+          properties: {
+            isShare: { type: 'boolean' },
+          },
+        },
+      },
+    },
+  })
+  @ApiBadRequestResponse({ description: '변경된 것이 없음' })
+  @ApiInternalServerErrorResponse({ description: '서버 에러 발생' })
   @Patch('42category/:id/is-share')
   update42CategoryIsShare(
     @Param('id') ftCategoryId: number,
@@ -364,6 +420,15 @@ export class TodoController {
   }
 
   @ApiOperation({ summary: '42 카테고리 삭제' })
+  @ApiOkResponse({
+    description: '성공',
+    schema: {
+      type: 'object',
+      properties: {
+        data: { type: 'object' },
+      },
+    },
+  })
   @Delete('42category/:id')
   delete42Category(@Param('id') ftCategoryId: number) {
     return this.todoService.delete42Category(ftCategoryId);

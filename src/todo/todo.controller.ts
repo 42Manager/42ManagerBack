@@ -34,7 +34,7 @@ export class TodoController {
   constructor(private readonly todoService: TodoService) {}
 
   @ApiOperation({
-    summary: '전체 Todo 목록 검색',
+    summary: 'Todo 목록 검색',
     description: '요청한 사용자의 모든 카테고리와 작업 반환',
   })
   @ApiOkResponse({
@@ -434,7 +434,7 @@ export class TodoController {
     return this.todoService.delete42Category(ftCategoryId);
   }
 
-  @ApiOperation({ summary: '전체 task 검색' })
+  @ApiOperation({ summary: 'task 검색' })
   @Get('task')
   getTask(@JwtPayload() account: Account) {
     return this.todoService.getTask(account.uid);

@@ -11,7 +11,6 @@ import {
 import { AuthService } from './auth.service';
 import {
   ApiBadRequestResponse,
-  ApiBearerAuth,
   ApiCookieAuth,
   ApiInternalServerErrorResponse,
   ApiOkResponse,
@@ -33,13 +32,35 @@ export class AuthController {
     private readonly config: ConfigService,
   ) {}
 
-  @ApiOperation({ summary: '로그인' })
-  @ApiOkResponse({ description: '로그인 성공' })
+  @ApiOperation({
+    summary: '42서울 사용자 로그인 및 token 발급',
+    description: '42서울 사용자 확인을 위해 42 토큰 필요',
+    requestBody: {
+      required: true,
+      content: {
+        'application/json': {
+          schema: {
+            type: 'object',
+            properties: { ftAccessToken: { type: 'string' } },
+          },
+        },
+      },
+    },
+  })
+  @ApiOkResponse({
+    description: '로그인 성공',
+    schema: {
+      type: 'object',
+      properties: {
+        accessToken: { type: 'string' },
+        imageUrl: { type: 'string' },
+      },
+    },
+  })
   @ApiUnauthorizedResponse({ description: '42OAuth, API 요청 실패' })
-  @ApiBadRequestResponse({ description: '올바르지 않은 매개변수 삽입' })
-  @ApiInternalServerErrorResponse({ description: 'DB 에러 발생' })
-  @ApiCookieAuth()
-  @Post('token')
+  @ApiBadRequestResponse({ description: '올바르지 않은 요청 데이터' })
+  @ApiInternalServerErrorResponse({ description: '서버 에러 발생' })
+  @Post('token/42seoul')
   async login(
     @Body('ftAccessToken') ftAccessToken: string,
     @Res({ passthrough: true }) res: Response,
@@ -60,16 +81,26 @@ export class AuthController {
     });
 
     return {
-      status: serviceResult.status,
       accessToken: serviceResult.accessToken,
       imageUrl: serviceResult.imageUrl,
     };
   }
 
-  @ApiOperation({ summary: '토큰 재발급' })
-  @ApiOkResponse({ description: '토큰 재발급 성공' })
+  @ApiOperation({
+    summary: '토큰 재발급',
+    description: 'cookie에 담겨있는 refresh token을 통해 token 재발급',
+  })
+  @ApiOkResponse({
+    description: '토큰 재발급 성공',
+    schema: {
+      type: 'object',
+      properties: {
+        accessToken: { type: 'string' },
+      },
+    },
+  })
   @ApiUnauthorizedResponse({ description: '토큰 인증 실패' })
-  @ApiInternalServerErrorResponse({ description: 'DB 에러 발생' })
+  @ApiInternalServerErrorResponse({ description: '서버 에러 발생' })
   @ApiCookieAuth()
   @Patch('token')
   @UseGuards(JwtRefreshTokenGuard)
@@ -86,7 +117,6 @@ export class AuthController {
     });
 
     return {
-      status: serviceResult.status,
       accessToken: serviceResult.accessToken,
     };
   }

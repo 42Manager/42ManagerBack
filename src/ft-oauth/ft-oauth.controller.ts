@@ -3,6 +3,7 @@ import {
   Get,
   HttpException,
   HttpStatus,
+  Patch,
   Post,
   Query,
   Res,
@@ -14,6 +15,7 @@ import {
   ApiInternalServerErrorResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiResponse,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
@@ -27,10 +29,15 @@ export class FtOauthController {
     private readonly config: ConfigService,
   ) {}
 
-  @ApiOperation({ summary: '42 code 발급 (리다이렉션)' })
+  @ApiOperation({
+    summary: '42 code 발급',
+    description:
+      '42 인트라 로그인 창으로 리다이렉션<br>로그인 성공 시 발급된 code를 가지고 /42oauth/token uri의 API로 리다이렉션',
+  })
+  @ApiResponse({ status: 302, description: '리다이렉션 성공' })
   @ApiInternalServerErrorResponse({ description: 'code 발급 실패' })
   @Get('authorize')
-  async get42code(@Res({ passthrough: true }) res: Response) {
+  async issue42code(@Res({ passthrough: true }) res: Response) {
     try {
       res.redirect(
         `https://api.intra.42.fr/oauth/authorize?client_id=${this.config.get(
@@ -40,19 +47,31 @@ export class FtOauthController {
         )}&response_type=${this.config.get('FT_RESPONSE_TYPE')}`,
       );
     } catch (err) {
-      return new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
-  @ApiOperation({ summary: '42 access token 발급' })
-  @ApiOkResponse({ description: '42 access token 발급 성공' })
-  @ApiUnauthorizedResponse({ description: '42 access token 발급 실패' })
+  @ApiOperation({
+    summary: '42 token 발급',
+    description:
+      '인트라 로그인 창에서 자동으로 리다이렉션 되어 호출되는 API<br>access token은 body, refresh token은 cookie에 발급',
+  })
+  @ApiOkResponse({
+    description: '42 token 발급 성공',
+    schema: {
+      type: 'object',
+      properties: {
+        ftAccessToken: { type: 'string' },
+      },
+    },
+  })
+  @ApiUnauthorizedResponse({ description: '42 token 발급 실패' })
   @Post('token')
-  async get42token(
+  async issue42token(
     @Query('code') code: string,
     @Res({ passthrough: true }) res: Response,
   ) {
-    const serviceResult = await this.ftOauthService.get42token(code);
+    const serviceResult = await this.ftOauthService.issue42token(code);
 
     res.cookie('ftRefreshToken', serviceResult.ftRefreshToken, {
       domain: process.env.FRONT_DOMAIN,
@@ -61,22 +80,31 @@ export class FtOauthController {
     });
 
     return {
-      status: true,
       ftAccessToken: serviceResult.ftAccessToken,
     };
   }
 
-  @ApiOperation({ summary: '42 access token 재발급' })
-  @ApiOkResponse({ description: '42 access token 재발급 성공' })
-  @ApiUnauthorizedResponse({ description: '42 access token 재발급 실패' })
-  @Post('token/refresh-token')
-  async reissuance42token(
+  @ApiOperation({
+    summary: '42 token 재발급',
+    description:
+      'cookie에 있는 42 refresh token으로 재발급<br>access token은 body, refresh token은 cookie에 발급',
+  })
+  @ApiOkResponse({
+    description: '42 token 재발급 성공',
+    schema: {
+      type: 'object',
+      properties: {
+        ftAccessToken: { type: 'string' },
+      },
+    },
+  })
+  @ApiUnauthorizedResponse({ description: '42 token 재발급 실패' })
+  @Patch('token')
+  async reissue42token(
     @Cookies('ftRefreshToken') refreshToken: string,
     @Res({ passthrough: true }) res: Response,
   ) {
-    const serviceResult = await this.ftOauthService.reissuance42token(
-      refreshToken,
-    );
+    const serviceResult = await this.ftOauthService.reisse42token(refreshToken);
 
     res.cookie('ftRefreshToken', serviceResult.ftRefreshToken, {
       domain: process.env.FRONT_DOMAIN,
@@ -85,7 +113,6 @@ export class FtOauthController {
     });
 
     return {
-      status: true,
       ftAccessToken: serviceResult.ftAccessToken,
     };
   }

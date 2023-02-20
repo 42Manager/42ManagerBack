@@ -13,7 +13,6 @@ import { FtTask } from './entities/todo.ft_task.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { CreateTaskDto } from './dto/create-task.dto';
-import { UpdateTaskDto } from './dto/update-task.dto';
 import { format } from 'date-fns-tz';
 import { ResponesCategoryDto } from './dto/response-category.dto';
 import { ResponseTaskDto } from './dto/response-task.dto';
@@ -96,7 +95,6 @@ export class TodoService {
     }
 
     return {
-      status: true,
       data,
     };
   }
@@ -120,7 +118,6 @@ export class TodoService {
     }
 
     return {
-      status: true,
       data,
     };
   }
@@ -156,7 +153,6 @@ export class TodoService {
     }
 
     return {
-      status: true,
       data,
     };
   }
@@ -188,7 +184,6 @@ export class TodoService {
     }
 
     return {
-      status: true,
       data: {
         name: updateCategoryDto.newName,
         color: updateCategoryDto.newColor,
@@ -218,8 +213,7 @@ export class TodoService {
     }
 
     return {
-      status: true,
-      isShare,
+      data: { isShare },
     };
   }
 
@@ -239,7 +233,7 @@ export class TodoService {
     }
 
     return {
-      status: true,
+      data: {},
     };
   }
 
@@ -259,7 +253,6 @@ export class TodoService {
     }
 
     return {
-      status: true,
       data: ftCategory,
     };
   }
@@ -340,7 +333,6 @@ export class TodoService {
       });
 
     return {
-      status: true,
       data: intraInfo,
     };
   }
@@ -367,7 +359,6 @@ export class TodoService {
     }
 
     return {
-      status: true,
       data,
     };
   }
@@ -394,8 +385,7 @@ export class TodoService {
     }
 
     return {
-      status: true,
-      isShare,
+      data: { isShare },
     };
   }
 
@@ -414,7 +404,7 @@ export class TodoService {
     }
 
     return {
-      status: true,
+      data: {},
     };
   }
 
@@ -434,7 +424,6 @@ export class TodoService {
         data[value.categoryId].push(new ResponseTaskDto());
         const item = data[value.categoryId][data[value.categoryId].length - 1];
         item.id = value.id;
-        item.categoryId = value.categoryId;
         item.content = value.content;
         item.isDone = value.isDone;
         item.startedAt = format(value.startedAt, 'yyyy-MM-dd HH:mm:ss');
@@ -450,7 +439,6 @@ export class TodoService {
     }
 
     return {
-      status: true,
       data,
     };
   }
@@ -477,7 +465,6 @@ export class TodoService {
     }
 
     return {
-      status: true,
       data,
     };
   }
@@ -504,8 +491,7 @@ export class TodoService {
     }
 
     return {
-      status: true,
-      content: newContent,
+      data: { content: newContent },
     };
   }
 
@@ -542,9 +528,10 @@ export class TodoService {
     }
 
     return {
-      status: true,
-      isDone,
-      finishedAt,
+      data: {
+        isDone,
+        finishedAt,
+      },
     };
   }
 
@@ -561,7 +548,7 @@ export class TodoService {
     }
 
     return {
-      status: true,
+      data: {},
     };
   }
 
@@ -582,7 +569,6 @@ export class TodoService {
         const item =
           data[value.ftCategoryId][data[value.ftCategoryId].length - 1];
         item.id = value.id;
-        item.categoryId = value.ftCategoryId;
         item.content = value.content;
         item.isDone = value.isDone;
         item.startedAt = format(value.startedAt, 'yyyy-MM-dd HH:mm:ss');
@@ -598,7 +584,6 @@ export class TodoService {
     }
 
     return {
-      status: true,
       data,
     };
   }
@@ -624,7 +609,6 @@ export class TodoService {
     }
 
     return {
-      status: true,
       data,
     };
   }
@@ -651,8 +635,7 @@ export class TodoService {
     }
 
     return {
-      status: true,
-      content: newContent,
+      data: { content: newContent },
     };
   }
 
@@ -689,9 +672,10 @@ export class TodoService {
     }
 
     return {
-      status: true,
-      isDone,
-      finishedAt,
+      data: {
+        isDone,
+        finishedAt,
+      },
     };
   }
 
@@ -710,7 +694,7 @@ export class TodoService {
     }
 
     return {
-      status: true,
+      data: {},
     };
   }
 }

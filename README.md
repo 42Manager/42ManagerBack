@@ -1,73 +1,66 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Project Title
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+One paragraph of project description goes here.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Table of Contents
 
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- [Installation](#installation)
+- [Usage](#usage)
+- [API Endpoints](#api-endpoints)
+- [Technologies](#technologies)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Installation
 
-```bash
+Provide instructions on how to install and configure the project. Include any dependencies and requirements that are necessary to run the project.
+
+For example:
+
+To get started, clone the repository and install the dependencies:
+
+shell
+Copy code
+$ git clone https://github.com/username/project-name.git
+$ cd project-name
 $ npm install
-```
+Usage
+Provide instructions on how to use the project. Include any important details and usage examples.
 
-## Running the app
+For example:
 
-```bash
-# development
-$ npm run start
+To start the project:
 
-# watch mode
-$ npm run start:dev
+ruby
+Copy code
+$ npm start
+API Endpoints
+List all the available endpoints with their associated methods and routes. Provide details on what each endpoint does and any expected parameters.
 
-# production mode
-$ npm run start:prod
-```
+For example:
 
-## Test
+GET /api/users - Returns a list of all users
+POST /api/users - Creates a new user
+Technologies
+List all the technologies used in the project.
 
-```bash
-# unit tests
-$ npm run test
+For example:
 
-# e2e tests
-$ npm run test:e2e
+Nest.js
+MongoDB
+TypeScript
+Jest
+Contributing
+Provide instructions on how to contribute to the project. Include details on how to report issues, create pull requests, or contact the project maintainer.
 
-# test coverage
-$ npm run test:cov
-```
+License
+Provide information about the license for the project. Include the license name and a link to the full license text.
 
-## Support
+For example:
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+This project is licensed under the MIT License.
 
-## Stay in touch
+sql
+Copy code
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+This template includes some basic sections that are common in many `README.md` files, but feel free to customize it to fit your specific project needs.

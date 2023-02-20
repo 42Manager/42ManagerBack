@@ -25,7 +25,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config, {
     extraModels: [Account],
   });
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('doc', app, document);
 
   app.use(cookieParser());
   app.enableCors({

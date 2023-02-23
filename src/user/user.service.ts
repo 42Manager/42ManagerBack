@@ -33,6 +33,7 @@ export class UserService {
         },
       );
     } catch (err) {
+      console.log(err);
       throw new UnauthorizedException(err);
     }
 

@@ -21,8 +21,9 @@ export class UserService {
   async getMyPage42Info(uid: string, ftAccessToken: string) {
     const data = {};
 
+    let intraInfoResult;
     try {
-      const intraInfoResult = await this.httpService.axiosRef.get(
+      intraInfoResult = await this.httpService.axiosRef.get(
         'https://api.intra.42.fr/v2/me',
         {
           headers: {
@@ -31,27 +32,28 @@ export class UserService {
           },
         },
       );
-      const filterResult = intraInfoResult.data.cursus_users.filter(
-        (item) => item.cursus_id === 21,
-      );
-
-      if (filterResult.length !== 1) {
-        throw new BadRequestException('42 카뎃이 아닌 사용자');
-      }
-
-      const blackholedAt = filterResult[0].blackholed_at;
-      if (blackholedAt === undefined) {
-        throw new InternalServerErrorException('블랙홀 정보를 받아오지 못함');
-      }
-
-      data['blackholedAt'] = formatInTimeZone(
-        blackholedAt,
-        'Asia/Seoul',
-        'yyyy-MM-dd HH:mm:ss',
-      );
     } catch (err) {
       throw new UnauthorizedException(err);
     }
+
+    const filterResult = intraInfoResult.data.cursus_users.filter(
+      (item) => item.cursus_id === 21,
+    );
+
+    if (filterResult.length !== 1) {
+      throw new BadRequestException('42 카뎃이 아닌 사용자');
+    }
+
+    const blackholedAt = filterResult[0].blackholed_at;
+    if (blackholedAt === undefined) {
+      throw new InternalServerErrorException('블랙홀 정보를 받아오지 못함');
+    }
+
+    data['blackholedAt'] = formatInTimeZone(
+      blackholedAt,
+      'Asia/Seoul',
+      'yyyy-MM-dd HH:mm:ss',
+    );
 
     try {
       const account: Account = await this.accountRepository.findOne({

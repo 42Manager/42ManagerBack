@@ -1,4 +1,4 @@
-import { Body, Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, Headers, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { JwtAccessTokenGuard } from 'src/auth/guard/jwt.auth.guard';
 import { JwtPayload } from 'src/decorator/jwt-payload.decorator';
@@ -59,7 +59,7 @@ export class UserController {
   @Get('42seoul')
   getMyPage42Info(
     @JwtPayload() account: Account,
-    @Body('ftAccessToken') ftAccessToken: string,
+    @Headers('ft-access-token') ftAccessToken: string,
   ) {
     console.log(`token : ${ftAccessToken}`);
     return this.userService.getMyPage42Info(account.uid, ftAccessToken);

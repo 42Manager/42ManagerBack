@@ -75,7 +75,7 @@ export class FtOauthController {
 
     res.cookie('ftRefreshToken', serviceResult.ftRefreshToken, {
       domain: process.env.FRONT_DOMAIN,
-      httpOnly: true,
+      httpOnly: false,
       secure: true,
       sameSite: 'none'
     });
@@ -109,7 +109,7 @@ export class FtOauthController {
 
     res.cookie('ftRefreshToken', serviceResult.ftRefreshToken, {
       domain: process.env.FRONT_DOMAIN,
-      httpOnly: true,
+      httpOnly: false,
       secure: true,
       sameSite: 'none'
     });

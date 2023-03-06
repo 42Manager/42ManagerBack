@@ -61,7 +61,6 @@ export class UserController {
     @JwtPayload() account: Account,
     @Headers('ft-access-token') ftAccessToken: string,
   ) {
-    console.log(`token : ${ftAccessToken}`);
     return this.userService.getMyPage42Info(account.uid, ftAccessToken);
   }
 }

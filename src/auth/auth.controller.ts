@@ -78,6 +78,7 @@ export class AuthController {
       domain: this.config.get('FRONT_DOMAIN'),
       httpOnly: true,
       secure: true,
+      sameSite: 'none'
     });
 
     return {
@@ -115,6 +116,7 @@ export class AuthController {
       domain: this.config.get('FRONT_DOMAIN'),
       httpOnly: true,
       secure: true,
+      sameSite: 'none'
     });
 
     return {

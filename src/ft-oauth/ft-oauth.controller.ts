@@ -106,7 +106,7 @@ export class FtOauthController {
     @Res({ passthrough: true }) res: Response,
   ) {
     const serviceResult = await this.ftOauthService.reisse42token(refreshToken);
-
+    console.log(`ft refresh token : ${refreshToken}`);
     res.cookie('ftRefreshToken', serviceResult.ftRefreshToken, {
       domain: process.env.FRONT_DOMAIN,
       httpOnly: true,

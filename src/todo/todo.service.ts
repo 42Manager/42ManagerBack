@@ -39,9 +39,9 @@ export class TodoService {
   async getAllTodo(uid: string) {
     const data = {
       category: [],
-      task: {},
+      task: [],
       ftCategory: [],
-      ftTask: {},
+      ftTask: [],
     };
 
     try {
@@ -73,10 +73,14 @@ export class TodoService {
       });
 
       getTaskResult.forEach((value) => {
-        if (data['task'][format(value.startedAt, 'yyyy-MM-dd')] == null) {
-          data['task'][format(value.startedAt, 'yyyy-MM-dd')] = [];
+        const copiedObj = Object.assign(value);
+        copiedObj.startedAt = format(new Date(value.startedAt), 'yyyy-MM-dd HH:mm:ss');
+
+        if (value.finishedAt !== null) {
+          copiedObj.finishedAt = format(new Date(value.finishedAt), 'yyyy-MM-dd HH:mm:ss');
         }
-        data['task'][format(value.startedAt, 'yyyy-MM-dd')].push(value);
+        
+        data['task'].push(copiedObj);
       });
 
       getFtCategoryResult.forEach((value) => {
@@ -84,12 +88,17 @@ export class TodoService {
       });
 
       getFtTaskResult.forEach((value) => {
-        if (data['ftTask'][format(value.startedAt, 'yyyy-MM-dd')] == null) {
-          data['ftTask'][format(value.startedAt, 'yyyy-MM-dd')] = [];
+        const copiedObj = Object.assign(value);
+        copiedObj.startedAt = format(new Date(value.startedAt), 'yyyy-MM-d HH:mm:ss');
+
+        if (value.finishedAt !== null) {
+          copiedObj.finishedAt = format(new Date(value.finishedAt), 'yyyy-MM-dd HH:mm:ss');
         }
-        data['ftTask'][format(value.startedAt, 'yyyy-MM-dd')].push(value);
+
+        data['ftTask'].push(copiedObj);
       });
     } catch (err) {
+      console.log(err);
       console.log('전체 Todo 목록 검색 실패');
       throw new InternalServerErrorException(err);
     }

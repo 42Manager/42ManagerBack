@@ -74,10 +74,10 @@ export class TodoService {
 
       getTaskResult.forEach((value) => {
         const copiedObj = Object.assign(value);
-        copiedObj.startedAt = format(new Date(value.startedAt), 'yyyy-MM-dd');
+        copiedObj.startedAt = format(new Date(value.startedAt), 'yyyy-MM-dd HH:mm:ss');
 
         if (value.finishedAt !== null) {
-          copiedObj.finishedAt = format(new Date(value.finishedAt), 'yyyy-MM-dd');
+          copiedObj.finishedAt = format(new Date(value.finishedAt), 'yyyy-MM-dd HH:mm:ss');
         }
         
         data['task'].push(copiedObj);
@@ -89,10 +89,10 @@ export class TodoService {
 
       getFtTaskResult.forEach((value) => {
         const copiedObj = Object.assign(value);
-        copiedObj.startedAt = format(new Date(value.startedAt), 'yyyy-MM-dd');
+        copiedObj.startedAt = format(new Date(value.startedAt), 'yyyy-MM-d HH:mm:ss');
 
         if (value.finishedAt !== null) {
-          copiedObj.finishedAt = format(new Date(value.finishedAt), 'yyyy-MM-dd');
+          copiedObj.finishedAt = format(new Date(value.finishedAt), 'yyyy-MM-dd HH:mm:ss');
         }
 
         data['ftTask'].push(copiedObj);

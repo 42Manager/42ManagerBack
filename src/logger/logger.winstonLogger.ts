@@ -16,7 +16,6 @@ const dailyOptions = (level: string) => {
 export const winstonLogger = winston.createLogger({
   transports: [
     new winstonDaily(dailyOptions('info')),
-    new winstonDaily(dailyOptions('warn')),
     new winstonDaily(dailyOptions('error')),
   ],
 });

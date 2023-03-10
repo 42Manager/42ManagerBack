@@ -73,12 +73,12 @@ export class FtOauthController {
   ) {
     const serviceResult = await this.ftOauthService.issue42token(code);
 
-    res.cookie('ftRefreshToken', serviceResult.ftRefreshToken, {
-      domain: null,
-      httpOnly: true,
-      secure: true,
-      sameSite: 'strict',
-    });
+    // res.cookie('ftRefreshToken', serviceResult.ftRefreshToken, {
+    //   domain: null,
+    //   httpOnly: true,
+    //   secure: true,
+    //   sameSite: 'strict',
+    // });
     res.clearCookie('ftRefreshToken', {
       domain: null,
       httpOnly: true,
@@ -113,7 +113,13 @@ export class FtOauthController {
   ) {
     const serviceResult = await this.ftOauthService.reisse42token(refreshToken);
     console.log(`ft refresh token : ${refreshToken}`);
-    res.cookie('ftRefreshToken', serviceResult.ftRefreshToken, {
+    // res.cookie('ftRefreshToken', serviceResult.ftRefreshToken, {
+    //   domain: null,
+    //   httpOnly: true,
+    //   secure: true,
+    //   sameSite: 'strict',
+    // });
+    res.clearCookie('ftRefreshToken', {
       domain: null,
       httpOnly: true,
       secure: true,

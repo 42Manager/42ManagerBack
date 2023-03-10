@@ -74,7 +74,7 @@ export class FtOauthController {
     const serviceResult = await this.ftOauthService.issue42token(code);
 
     res.cookie('ftRefreshToken', serviceResult.ftRefreshToken, {
-      domain: process.env.FRONT_DOMAIN,
+      domain: null,
       httpOnly: true,
       secure: true,
       sameSite: 'strict',
@@ -108,7 +108,7 @@ export class FtOauthController {
     const serviceResult = await this.ftOauthService.reisse42token(refreshToken);
     console.log(`ft refresh token : ${refreshToken}`);
     res.cookie('ftRefreshToken', serviceResult.ftRefreshToken, {
-      domain: process.env.FRONT_DOMAIN,
+      domain: null,
       httpOnly: true,
       secure: true,
       sameSite: 'strict',

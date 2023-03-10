@@ -75,7 +75,7 @@ export class AuthController {
     const serviceResult = await this.authService.login(ftAccessToken);
 
     res.cookie('refreshToken', serviceResult.refreshToken, {
-      domain: this.config.get('FRONT_DOMAIN'),
+      domain: null,
       httpOnly: true,
       secure: true,
       sameSite: 'strict',
@@ -113,7 +113,7 @@ export class AuthController {
     const serviceResult = await this.authService.reissuanceToken(account.uid);
 
     res.cookie('refreshToken', serviceResult.refreshToken, {
-      domain: this.config.get('FRONT_DOMAIN'),
+      domain: null,
       httpOnly: true,
       secure: true,
       sameSite: 'strict',

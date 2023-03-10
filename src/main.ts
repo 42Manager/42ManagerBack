@@ -4,7 +4,9 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { Account } from './auth/entities/account.entity';
 import * as cookieParser from 'cookie-parser';
 import * as dotenv from 'dotenv';
-import { LoggingInterceptor } from './interceptor/logger.interceptor';
+import { LoggingInterceptor } from './logger/logger.loggingInterceptor';
+import { LoggingExceptionfilter } from './logger/logger.loggingExceptonfilter';
+//import { LoggingInterceptor } from './interceptor/logger.interceptor';
 dotenv.config({ path: '../.env' });
 
 async function bootstrap() {
@@ -31,6 +33,7 @@ async function bootstrap() {
   SwaggerModule.setup('doc', app, document);
 
   app.useGlobalInterceptors(new LoggingInterceptor());
+  app.useGlobalFilters(new LoggingExceptionfilter());
   app.use(cookieParser());
   app.enableCors({
     origin: true,

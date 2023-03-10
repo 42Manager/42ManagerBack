@@ -79,6 +79,12 @@ export class FtOauthController {
       secure: true,
       sameSite: 'strict',
     });
+    res.clearCookie('ftRefreshToken', {
+      domain: null,
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict',
+    });
 
     return {
       ftAccessToken: serviceResult.ftAccessToken,

@@ -80,6 +80,12 @@ export class AuthController {
       secure: true,
       sameSite: 'strict',
     });
+    res.clearCookie('refreshToken', {
+      domain: null,
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict',
+    });
 
     return {
       accessToken: serviceResult.accessToken,
@@ -113,6 +119,12 @@ export class AuthController {
     const serviceResult = await this.authService.reissuanceToken(account.uid);
 
     res.cookie('refreshToken', serviceResult.refreshToken, {
+      domain: null,
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict',
+    });
+    res.clearCookie('refreshToken', {
       domain: null,
       httpOnly: true,
       secure: true,

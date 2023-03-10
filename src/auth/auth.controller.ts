@@ -79,7 +79,6 @@ export class AuthController {
       httpOnly: true,
       secure: true,
       sameSite: 'strict',
-      maxAge: 1000,
     });
 
     return {
@@ -118,7 +117,6 @@ export class AuthController {
       httpOnly: true,
       secure: true,
       sameSite: 'strict',
-      maxAge: 1000,
     });
 
     return {

@@ -77,7 +77,8 @@ export class FtOauthController {
       domain: process.env.FRONT_DOMAIN,
       httpOnly: true,
       secure: true,
-      sameSite: 'strict'
+      sameSite: 'strict',
+      maxAge: 1000,
     });
 
     return {
@@ -111,7 +112,8 @@ export class FtOauthController {
       domain: process.env.FRONT_DOMAIN,
       httpOnly: true,
       secure: true,
-      sameSite: 'strict'
+      sameSite: 'strict',
+      maxAge: 1000,
     });
 
     return {

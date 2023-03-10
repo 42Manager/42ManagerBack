@@ -78,7 +78,8 @@ export class AuthController {
       domain: this.config.get('FRONT_DOMAIN'),
       httpOnly: true,
       secure: true,
-      sameSite: 'strict'
+      sameSite: 'strict',
+      maxAge: 1000,
     });
 
     return {
@@ -116,7 +117,8 @@ export class AuthController {
       domain: this.config.get('FRONT_DOMAIN'),
       httpOnly: true,
       secure: true,
-      sameSite: 'strict'
+      sameSite: 'strict',
+      maxAge: 1000,
     });
 
     return {

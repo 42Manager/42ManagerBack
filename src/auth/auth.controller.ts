@@ -74,17 +74,10 @@ export class AuthController {
 
     const serviceResult = await this.authService.login(ftAccessToken);
 
-    // res.cookie('refreshToken', serviceResult.refreshToken, {
-    //   domain: null,
-    //   httpOnly: true,
-    //   secure: true,
-    //   sameSite: 'strict',
-    // });
-    res.clearCookie('refreshToken', {
+    res.cookie('refreshToken', serviceResult.refreshToken, {
       domain: null,
       httpOnly: true,
       secure: true,
-      sameSite: 'strict',
     });
 
     return {
@@ -118,17 +111,10 @@ export class AuthController {
     console.log(account);
     const serviceResult = await this.authService.reissuanceToken(account.uid);
 
-    // res.cookie('refreshToken', serviceResult.refreshToken, {
-    //   domain: null,
-    //   httpOnly: true,
-    //   secure: true,
-    //   sameSite: 'strict',
-    // });
-    res.clearCookie('refreshToken', {
+    res.cookie('refreshToken', serviceResult.refreshToken, {
       domain: null,
       httpOnly: true,
       secure: true,
-      sameSite: 'strict',
     });
 
     return {

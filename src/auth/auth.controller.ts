@@ -108,7 +108,7 @@ export class AuthController {
     @Cookies('refreshToken') account: Account,
     @Res({ passthrough: true }) res: Response,
   ) {
-    console.log(account);
+    console.log(`uid: ${account.uid}`);
     const serviceResult = await this.authService.reissuanceToken(account.uid);
 
     res.cookie('refreshToken', serviceResult.refreshToken, {

@@ -40,7 +40,8 @@ export class RefreshTokenStrategy extends PassportStrategy(
     });
 
     const storedRefreshToken = req.cookies.refreshToken;
-
+    console.log(`request token: ${storedRefreshToken}`);
+    console.log(`db token: ${account.refreshToken}`);
     if (storedRefreshToken !== account.refreshToken) {
       await this.accountRepository.save({
         uid: account.uid,

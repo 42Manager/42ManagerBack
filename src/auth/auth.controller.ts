@@ -79,6 +79,11 @@ export class AuthController {
       httpOnly: true,
       secure: true,
     });
+    res.clearCookie('refreshToken', {
+      domain: 'api.42seoul.link',
+      httpOnly: true,
+      secure: true,
+    });
 
     return {
       accessToken: serviceResult.accessToken,

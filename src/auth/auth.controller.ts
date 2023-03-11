@@ -19,10 +19,10 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { JwtRefreshTokenGuard } from './guard/jwt.auth.guard';
-import { Account } from './entities/account.entity';
 import { Response } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { Cookies } from '../decorator/cookie-jwt.decorator';
+import { JwtPayload } from 'src/decorator/jwt-payload.decorator';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -105,11 +105,10 @@ export class AuthController {
   @Patch('token')
   @UseGuards(JwtRefreshTokenGuard)
   async reissuanceToken(
-    @Cookies('refreshToken') account: Account,
+    @JwtPayload('uid') uid: string,
     @Res({ passthrough: true }) res: Response,
   ) {
-    console.log(`uid: ${account.uid}`);
-    const serviceResult = await this.authService.reissuanceToken(account.uid);
+    const serviceResult = await this.authService.reissuanceToken(uid);
 
     res.cookie('refreshToken', serviceResult.refreshToken, {
       domain: this.config.get('FRONT_DOMAIN'),

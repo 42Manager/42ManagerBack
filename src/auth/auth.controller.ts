@@ -83,6 +83,7 @@ export class AuthController {
       domain: 'api.42seoul.link',
       httpOnly: true,
       secure: true,
+      maxAge: 2 * 60 * 60 * 1000,
     });
 
     return {
@@ -120,6 +121,7 @@ export class AuthController {
       domain: this.config.get('FRONT_DOMAIN'),
       httpOnly: true,
       secure: true,
+      maxAge: 2 * 60 * 60 * 1000,
     });
     res.clearCookie('refreshToken', {
       domain: 'api.42seoul.link',
